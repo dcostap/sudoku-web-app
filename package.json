@@ -1,5 +1,5 @@
 {
-  "name": "sudoku-web-app",
+  "name": "sudoku",
   "version": "1.0.32",
   "description": "A web application for solving & sharing Sudoku puzzles. Created for SudokuExchange.com",
   "author": {
@@ -14,7 +14,7 @@
     "sudoku"
   ],
   "private": true,
-  "homepage": "https://dariocosta.dev/sudoku",
+  "homepage": "https://sudoku.dariocosta.dev",
   "dependencies": {
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "13.4.0",
