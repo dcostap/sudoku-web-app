@@ -98,14 +98,14 @@ function newCell(index, digit) {
     });
 }
 
-export function newSudokuModel({initialDigits, difficultyLevel, onPuzzleStateChange, entryPoint, skipCheck}) {
+export function newSudokuModel({initialDigits, difficultyLevel, onPuzzleStateChange, entryPoint, skipCheck, showModal, mode: forcedMode}) {
     initialDigits = (initialDigits || '').replace(/[_.-]/g, '0');
     if (initialDigits.length < 81) {
         initialDigits = expandPuzzleDigits(initialDigits);
     }
     initialDigits = initialDigits.replace(/\D/g, '')
     const initialError = skipCheck ? undefined : modelHelpers.initialErrorCheck(initialDigits);
-    const mode = initialError ? 'enter' : 'solve';
+    const mode = forcedMode || ((initialError || initialDigits === '0'.repeat(81)) ? 'enter' : 'solve');
     const settings = modelHelpers.loadSettings();
     const featureFlags = modelHelpers.loadFeatureFlags();
     const startTime = mode === 'solve' ? Date.now() : undefined;
@@ -135,8 +135,8 @@ export function newSudokuModel({initialDigits, difficultyLevel, onPuzzleStateCha
         hintsUsed: emptySet,
     });
     return initialError
-        ? modelHelpers.setInitialDigits(grid, initialDigits, initialError, entryPoint)
-        : modelHelpers.setGivenDigits(grid, initialDigits, {skipCheck});
+        ? modelHelpers.setInitialDigits(grid, initialDigits, initialError, entryPoint, {showModal})
+        : modelHelpers.setGivenDigits(grid, initialDigits, {skipCheck, showModal});
 };
 
 function actionsBlocked(grid) {
@@ -258,6 +258,9 @@ export const modelHelpers = {
         if (!initialDigits.match(/^[0-9]{81}$/)) {
             return { insufficientDigits: true };
         }
+        if (initialDigits === '0'.repeat(81)) {
+            return { blank: true };
+        }
         const result = modelHelpers.checkDigits(initialDigits);
         if (result.hasErrors) {
             return { hasErrors: true };
@@ -285,7 +288,7 @@ export const modelHelpers = {
         if (result.uniqueSolution) {
             grid = grid.set('finalDigits', result.finalDigits);
         }
-        else {
+        else if (options.showModal) {
             grid = grid.set('modalState', {
                 modalType: MODAL_TYPE_CHECK_RESULT,
                 icon: 'warning',
@@ -307,7 +310,7 @@ export const modelHelpers = {
         return grid;
     },
 
-    setInitialDigits: (grid, initialDigits, initialError, entryPoint) => {
+    setInitialDigits: (grid, initialDigits, initialError, entryPoint, options = {}) => {
         const cells = initialError.noStartingDigits
             ? Range(0, 81).toList().map(i => newCell(i, '0'))
             : Range(0, 81).toList().map(i => newCell(i, '0').set('digit', initialDigits[i] || '0'));
@@ -318,19 +321,21 @@ export const modelHelpers = {
             window.location.href = window.location.href.replace(/[?#].*$/, "");
             return grid;
         }
-        else if (initialError.insufficientDigits) {
-            modalState = {
-                modalType: MODAL_TYPE_INVALID_INITIAL_DIGITS,
-                insufficientDigits: true,
-                initialDigits: initialDigits,
-            };
-        }
-        else if (initialError.hasErrors) {
-            modalState = {
-                modalType: MODAL_TYPE_INVALID_INITIAL_DIGITS,
-                hasErrors: true,
-                initialDigits: initialDigits,
-            };
+        else if (options.showModal) {
+            if (initialError.insufficientDigits) {
+                modalState = {
+                    modalType: MODAL_TYPE_INVALID_INITIAL_DIGITS,
+                    insufficientDigits: true,
+                    initialDigits: initialDigits,
+                };
+            }
+            else if (initialError.hasErrors) {
+                modalState = {
+                    modalType: MODAL_TYPE_INVALID_INITIAL_DIGITS,
+                    hasErrors: true,
+                    initialDigits: initialDigits,
+                };
+            }
         }
         return modelHelpers.checkCompletedDigits(grid.merge({
             initialDigits,
@@ -482,6 +487,7 @@ export const modelHelpers = {
         const archiveEntry = {
             initialDigits,
             difficultyLevel: grid.get('difficultyLevel'),
+            mode: grid.get('mode'),
             startTime: grid.get('startTime'),
             endTime: grid.get('endTime') || Date.now(),
             elapsedTime: elapsedTime,
@@ -716,6 +722,7 @@ export const modelHelpers = {
                 const archiveEntry = {
                     initialDigits: puzzleState.initialDigits,
                     difficultyLevel: puzzleState.difficultyLevel,
+                    mode: puzzleState.mode,
                     startTime: puzzleState.startTime,
                     endTime: puzzleState.lastUpdatedTime,
                     elapsedTime: puzzleState.elapsedTime,
@@ -1091,29 +1098,19 @@ export const modelHelpers = {
     },
 
     confirmRestart: (grid) => {
-        return grid.set('modalState', {
-            modalType: MODAL_TYPE_CONFIRM_RESTART,
-            solved: grid.get("solved"),
-            escapeAction: 'close',
-        });
+        return modelHelpers.applyRestart(grid);
     },
 
     confirmClearColorHighlights: (grid) => {
         const coloredCount = grid.get('cells').count(c => c.get('colorCode') !== '1')
         if (coloredCount > 0) {
-            return grid.set('modalState', {
-                modalType: MODAL_TYPE_CONFIRM_CLEAR_COLOR_HIGHLIGHTS,
-                escapeAction: 'close',
-            });
+            return modelHelpers.applyClearColorHighlights(grid);
         }
         return grid;
     },
 
     showConfirmAbandonModal: (grid) => {
-        return grid.set('modalState', {
-            modalType: MODAL_TYPE_CONFIRM_ABANDON,
-            escapeAction: 'close',
-        });
+        return modelHelpers.abandonPuzzle(grid);
     },
 
     showSavedPuzzlesModal: (grid, oldModalState) => {
@@ -1349,6 +1346,7 @@ export const modelHelpers = {
             const puzzleState = {
                 initialDigits,
                 difficultyLevel: grid.get('difficultyLevel'),
+                mode: grid.get('mode'),
                 startTime: grid.get('startTime'),
                 elapsedTime: elapsedTime,
                 undoList: grid.get('undoList').toArray(),
@@ -1425,7 +1423,7 @@ export const modelHelpers = {
         }
         const {initialDigits, currentSnapshot} = puzzleState;
         grid = grid.merge({
-            mode: 'solve',
+            mode: puzzleState.mode || 'solve',
             initialDigits,
             difficultyLevel: puzzleState.difficultyLevel,
             startTime: puzzleState.startTime,

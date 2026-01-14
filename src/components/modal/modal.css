@@ -43,7 +43,7 @@
 .modal .secondary,
 .modal .cancel,
 .modal .danger {
-    @apply px-5 py-2.5 text-sm font-bold rounded-xl border-none transition-all duration-200 active:scale-95 inline-block text-center no-underline;
+    @apply px-5 py-2.5 text-sm font-bold rounded-xl border-none transition-all duration-100 active:scale-95 inline-block text-center no-underline;
     min-width: 6rem;
 }
 
@@ -73,7 +73,7 @@ input.toggle {
 }
 
 input.toggle + .indicator {
-    @apply relative w-12 h-6 bg-gray-200 rounded-full transition-colors duration-300 border-2 border-transparent;
+    @apply relative w-12 h-6 bg-gray-200 rounded-full transition-colors duration-200 border-2 border-transparent;
 }
 
 input.toggle:checked + .indicator {
@@ -81,7 +81,7 @@ input.toggle:checked + .indicator {
 }
 
 input.toggle + .indicator::before {
-    @apply content-[''] absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-300;
+    @apply content-[''] absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200;
 }
 
 input.toggle:checked + .indicator::before {
@@ -92,6 +92,36 @@ input.toggle:checked + .indicator::before {
 .modal.welcome, .modal.resume-restart { max-width: 28rem; }
 .modal.saved-puzzles { max-width: 32rem; }
 .modal.about, .modal.share { max-width: 24rem; }
+.modal.check-result { max-width: 26rem; }
+
+/* Check result modal */
+.modal.check-result .icon-message {
+    @apply flex flex-col items-center text-center space-y-4;
+}
+
+.modal.check-result .icon {
+    @apply flex items-center justify-center w-16 h-16 rounded-full mb-2;
+}
+
+.modal.check-result .check-result-warning {
+    @apply bg-amber-100 text-amber-600;
+}
+
+.modal.check-result .check-result-error {
+    @apply bg-red-100 text-red-600;
+}
+
+.modal.check-result .check-result-success {
+    @apply bg-green-100 text-green-600;
+}
+
+.modal.check-result .icon svg {
+    @apply w-10 h-10;
+}
+
+.modal.check-result p {
+    @apply text-base font-medium text-gray-700 m-0;
+}
 
 /* Saved puzzles improvements */
 .saved-puzzle {
@@ -452,10 +482,6 @@ input.toggle:checked + .indicator::before {
 
     .difficulty-options {
         font-size: 4.5vw;
-    }
-
-    .modal.check-result .icon img {
-        width: 2.4em;
     }
 }
 

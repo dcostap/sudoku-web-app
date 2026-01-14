@@ -62,18 +62,9 @@ function groupPuzzlesByMonth(puzzles) {
 
 function NYTPuzzleList({ nytPuzzles, showRatings, shortenLinks }) {
     const [expandedMonth, setExpandedMonth] = useState(null);
-    const [isInitialized, setIsInitialized] = useState(false);
 
     const puzzlesByMonth = useMemo(() => groupPuzzlesByMonth(nytPuzzles), [nytPuzzles]);
     const monthNames = useMemo(() => Object.keys(puzzlesByMonth), [puzzlesByMonth]);
-
-    // Auto-expand the first month on mount
-    useEffect(() => {
-        if (!isInitialized && monthNames.length > 0) {
-            setExpandedMonth(monthNames[0]);
-            setIsInitialized(true);
-        }
-    }, [monthNames, isInitialized]);
 
     if (!nytPuzzles || nytPuzzles.length === 0) {
         return (
@@ -251,13 +242,19 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
                         minute: '2-digit'
                     });
 
-                    const statusBadge = entry.status === 'solved' 
+                    const isDraft = entry.mode === 'enter';
+
+                    let statusBadge = entry.status === 'solved' 
                         ? <span className="status-badge solved">✓ Solved</span>
                         : <span className="status-badge abandoned">Abandoned</span>;
 
+                    if (isDraft) {
+                        statusBadge = <span className="status-badge draft">✎ Draft / In Design</span>;
+                    }
+
                     // Create URLs for replay and solve again
                     const replayUrl = `./?s=${puzzleString}&d=${entry.difficultyLevel || ''}&replay=1&attempt=${entry.attemptIndex}`;
-                    const solveAgainUrl = `./?s=${puzzleString}&d=${entry.difficultyLevel || ''}`;
+                    const solveAgainUrl = `./?s=${puzzleString}&d=${entry.difficultyLevel || ''}${isDraft ? '&mode=enter' : ''}`;
 
                     return (
                         <div key={idx} className="history-puzzle-item">
@@ -274,14 +271,14 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
                                     <strong>Time:</strong> {formatElapsedTime(entry.elapsedTime)}
                                 </div>
                                 <div className="history-puzzle-date">
-                                    {dateStr}
+                                    New York Times - {dateStr}
                                 </div>
                                 <div className="history-puzzle-actions">
                                     <a href={replayUrl} className="btn-small btn-secondary">
                                         ▶ Replay
                                     </a>
                                     <a href={solveAgainUrl} className="btn-small btn-primary">
-                                        ↻ Solve Again
+                                        {isDraft ? '✎ Continue Design' : '↻ Solve Again'}
                                     </a>
                                 </div>
                             </div>
@@ -345,7 +342,7 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
                             className={`tab-item ${activeTab === 'nyt' ? 'active' : ''}`}
                             onClick={() => setActiveTab('nyt')}
                         >
-                            NYT Archive
+                            New York Times Archive
                         </button>
                         <button 
                             className={`tab-item ${activeTab === 'in-progress' ? 'active' : ''}`}

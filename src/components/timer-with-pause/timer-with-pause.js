@@ -21,7 +21,7 @@ function ElapsedTime ({intervalStartTime, endTime, pausedAt}) {
     const seconds = Math.floor(((endTime || pausedAt || tickNow) - intervalStartTime) / 1000);
 
     return (
-        <span className="text-base font-mono font-medium text-gray-700">{secondsAsHMS(seconds)}</span>
+        <span className="text-base font-mono text-gray-700">{secondsAsHMS(seconds)}</span>
     );
 }
 
@@ -38,7 +38,7 @@ function TimerWithPause({startTime, intervalStartTime, endTime, pausedAt, pauseH
         )
         : null;
     return (
-        <div className="flex items-center gap-2 px-4 py-2 bg-white/40 backdrop-blur-sm rounded-lg border border-gray-200/50 shadow-sm">
+        <div className="flex items-center gap-2 px-4 py-2">
             <ElapsedTime intervalStartTime={intervalStartTime} endTime={endTime} pausedAt={pausedAt} />
             {hintCount}
             <button 

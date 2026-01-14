@@ -33,9 +33,9 @@ module.exports = {
         }
       },
       animation: {
-        'fade-in': 'fadeIn 0.2s ease-in',
-        'slide-down': 'slideDown 0.3s ease-out',
-        'scale-in': 'scaleIn 0.2s ease-out',
+        'fade-in': 'fadeIn 0.1s ease-out',
+        'slide-down': 'slideDown 0.15s ease-out',
+        'scale-in': 'scaleIn 0.1s ease-out',
       },
       keyframes: {
         fadeIn: {

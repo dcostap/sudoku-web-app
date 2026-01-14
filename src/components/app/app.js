@@ -35,6 +35,33 @@ function initialGridFromURL () {
     const params = new URLSearchParams(window.location.search);
     const initialDigits = params.get('s');
     
+    // If it is 'new' puzzle mode, create a blank grid
+    if (params.has('new') && !initialDigits) {
+        return newSudokuModel({
+            initialDigits: '0'.repeat(81),
+            skipCheck: true,
+            onPuzzleStateChange: grid => {
+                document.body.dataset.currentSnapshot = grid.get('currentSnapshot');
+                modelHelpers.persistPuzzleState(grid);
+            }
+        });
+    }
+
+    if (params.has('import') && !initialDigits) {
+        const tempGrid = newSudokuModel({ initialDigits: '0'.repeat(81), skipCheck: true, onPuzzleStateChange: () => {} });
+        return modelHelpers.showPasteModal(tempGrid);
+    }
+
+    if (params.has('settings') && !initialDigits) {
+        const tempGrid = newSudokuModel({ initialDigits: '0'.repeat(81), skipCheck: true, onPuzzleStateChange: () => {} });
+        return modelHelpers.showSettingsModal(tempGrid);
+    }
+
+    if (params.has('about') && !initialDigits) {
+        const tempGrid = newSudokuModel({ initialDigits: '0'.repeat(81), skipCheck: true, onPuzzleStateChange: () => {} });
+        return modelHelpers.showAboutModal(tempGrid);
+    }
+
     // If no puzzle is specified, return null to show the home page
     if (!initialDigits) {
         return null;
@@ -61,6 +88,8 @@ function initialGridFromURL () {
     let grid = newSudokuModel({
         initialDigits: initialDigits,
         difficultyLevel: params.get('d'),
+        skipCheck: params.get('r') === '1',
+        mode: params.get('mode'),
         onPuzzleStateChange: grid => {
             document.body.dataset.currentSnapshot = grid.get('currentSnapshot');
             modelHelpers.persistPuzzleState(grid);
@@ -473,10 +502,10 @@ function dispatchMenuAction(action, setGrid) {
         setGrid((grid) => modelHelpers.showHintModal(grid));
     }
     else if (action === 'restart-puzzle') {
-        setGrid((grid) => modelHelpers.confirmRestart(grid));
+        setGrid((grid) => modelHelpers.applyRestart(grid));
     }
     else if (action === 'abandon-puzzle') {
-        setGrid((grid) => modelHelpers.showConfirmAbandonModal(grid));
+        setGrid((grid) => modelHelpers.abandonPuzzle(grid));
     }
     else {
         console.log(`Unrecognised menu action: '${action}'`);
@@ -485,11 +514,6 @@ function dispatchMenuAction(action, setGrid) {
 
 function pauseTimer(setGrid) {
     setGrid((grid) => modelHelpers.pauseTimer(grid));
-}
-
-function preStartCheck() {
-    // Suppress onpageunload handling when user clicks 'Start' after entering a puzzle
-    delete document.body.dataset.currentSnapshot;
 }
 
 function getDimensions(winSize) {
@@ -517,8 +541,11 @@ function App() {
     const [grid, setGrid] = useState(initialGridFromURL);
     
     // Determine what to render
+    const params = new URLSearchParams(window.location.search);
+    const inPuzzleView = params.has('s') || params.has('new') || params.has('replay');
+    
     const isHomePage = grid === null;
-    const isHomePageModal = !isHomePage && grid.get('initialDigits') === '0'.repeat(81) && grid.get('modalState');
+    const isHomePageModal = !isHomePage && !inPuzzleView && grid.get('modalState');
     const isPuzzleView = !isHomePage && !isHomePageModal;
     
     // Extract values from grid for puzzle view (or use defaults)
@@ -533,6 +560,37 @@ function App() {
     const inputMode = grid ? (grid.get('tempInputMode') || grid.get('inputMode')) : 'digit';
     const completedDigits = grid ? grid.get('completedDigits') : {};
     const modalState = grid ? grid.get('modalState') : undefined;
+
+    const handleStart = useCallback((e) => {
+        if (e) e.preventDefault();
+        const digits = modelHelpers.asDigits(grid);
+        // Change URL without reloading
+        window.history.pushState({ s: digits }, '', '?s=' + digits);
+        // Switch to solve mode
+        setGrid(grid => {
+            const nextGrid = modelHelpers.setGivenDigits(grid, digits, { skipCheck: false });
+            const now = Date.now();
+            return nextGrid.merge({
+                mode: 'solve',
+                startTime: now,
+                intervalStartTime: now,
+                pausedAt: undefined
+            });
+        });
+    }, [grid]);
+
+    const startButton = mode === 'enter'
+        ? (
+            <div className="flex justify-center mt-6">
+                <button 
+                    className="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white text-xl font-black rounded-2xl shadow-lg shadow-primary-500/30 transition-all active:scale-95" 
+                    onClick={handleStart}
+                >
+                    START PUZZLE
+                </button>
+            </div>
+        )
+        : null;
     
     if (modalState) {
         if (modalState.fetchRequired) {
@@ -707,14 +765,6 @@ function App() {
     
     const isReplayMode = mode === 'replay';
 
-    const startButton = mode === 'enter'
-        ? (
-            <div className="buttons">
-                <a className="btn" href={'?s=' + modelHelpers.asDigits(grid)} onClick={preStartCheck}>Start</a>
-            </div>
-        )
-        : null;
-
     const modal = (
         <ModalContainer
             modalState={modalState}
@@ -737,6 +787,7 @@ function App() {
                 menuHandler={menuHandler}
                 pauseHandler={pauseHandler}
                 initialDigits={grid.get('initialDigits')}
+                mode={mode}
             />
         );
 

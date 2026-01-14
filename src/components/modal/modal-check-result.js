@@ -10,10 +10,10 @@ export default function ModalCheckResult({modalState, modalHandler}) {
         <div className="modal check-result">
             <div className="icon-message">
                 {icon}
-                <div className="message">{errorMessage}</div>
+                <p>{errorMessage}</p>
             </div>
             <div className="buttons">
-                <button className="primary" onClick={cancelHandler} autoFocus>OK</button>
+                <button className="primary" onClick={cancelHandler} autoFocus>Close</button>
             </div>
         </div>
     )

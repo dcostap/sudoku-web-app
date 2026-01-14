@@ -121,6 +121,10 @@
     @apply bg-gray-100 text-gray-600;
 }
 
+.status-badge.draft {
+    @apply bg-blue-100 text-blue-700;
+}
+
 .saved-puzzle-time,
 .history-puzzle-time {
     @apply text-sm font-medium text-gray-900;

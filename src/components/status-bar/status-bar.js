@@ -11,22 +11,21 @@ const stopPropagation = (e) => e.stopPropagation();
 
 
 function SiteLink () {
+    // subtle link to go back to / 
     return (
-        <div className="flex items-center justify-center w-full h-full">
-            <a href="/" className="inline-block hover:opacity-100 opacity-80 transition-opacity duration-200">
-                <svg className="w-[38vh] h-auto" version="1.1" viewBox="0 0 650 120" title="SudokuExchange.com">
-                    <use href="#site-domain" />
-                </svg>
-            </a>
-        </div>
+        <a href="/" className="text-lg font-semibold text-gray-800 hover:text-primary-600 transition-colors duration-200">
+             ❮ Go back
+        </a>
     );
 }
 
 function StatusBar ({
     showTimer, startTime, intervalStartTime, endTime, pausedAt, hintsUsedCount,
-    showPencilmarks, menuHandler, pauseHandler, initialDigits
+    showPencilmarks, menuHandler, pauseHandler, initialDigits, mode
 }) {
-    const timer = showTimer
+    const isDesignMode = mode === 'enter';
+
+    const timer = showTimer && !isDesignMode
         ? (
             <TimerWithPause
                 startTime={startTime}
@@ -37,9 +36,14 @@ function StatusBar ({
                 hintsUsedCount={hintsUsedCount}
             />
         )
-        : null;
+        : isDesignMode ? (
+            <div className="flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-200 rounded-full">
+                <span className="text-amber-600">✎</span>
+                <span className="text-xs font-black text-amber-700 uppercase tracking-widest">Design Mode</span>
+            </div>
+        ) : null;
     return (
-        <div className="fixed top-0 left-0 w-full h-[7.5vh] bg-gradient-to-b from-white/90 to-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-lg z-50" onMouseDown={stopPropagation}>
+        <div className="fixed top-0 left-0 w-full h-[7.5vh]z-50" onMouseDown={stopPropagation}>
             <div className="h-full flex items-center justify-between px-4">
                 <div className="hidden md:block flex-1">
                     <SiteLink />
