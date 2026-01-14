@@ -280,11 +280,6 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
 
     return (
         <div className="home-page">
-            <div className="home-page-header">
-                <h1>Sudoku Exchange</h1>
-                <p className="tagline">Solve, Share, and Exchange Sudoku Puzzles</p>
-            </div>
-
             <div className="home-page-content">
                 <section className="action-section">
                     <h2>Get Started</h2>
@@ -376,13 +371,6 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
                     )}
                 </section>
             </div>
-
-            <footer className="home-page-footer">
-                <p>
-                    Follow <a href="https://twitter.com/SudokuExchange" target="_blank" rel="noreferrer">@SudokuExchange</a> on Twitter for updates
-                    {onAbout && <> · <button className="link-button" onClick={onAbout}>About</button></>}
-                </p>
-            </footer>
         </div>
     );
 }
