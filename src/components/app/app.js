@@ -581,7 +581,7 @@ function App() {
 
     const startButton = mode === 'enter'
         ? (
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-0">
                 <button 
                     className="btn-primary text-xl px-6 py-3" 
                     onClick={handleStart}

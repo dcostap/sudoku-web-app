@@ -10,17 +10,21 @@
 .sudoku-grid .line {
     stroke: var(--grid-line-color);
     stroke-width: var(--grid-line-width);
+    shape-rendering: crispEdges;
+    vector-effect: non-scaling-stroke;
 }
 
 .sudoku-grid.mini .line {
     stroke: var(--mini-grid-line-color);
     stroke-width: var(--grid-line-width);
+    shape-rendering: crispEdges;
 }
 
 .sudoku-grid .line-bold {
     stroke: var(--grid-line-color-bold);
     stroke-width: var(--grid-line-width-bold);
     stroke-linejoin: round;
+    shape-rendering: crispEdges;
 }
 
 .grid-bg { fill: var(--background-color); }
@@ -29,6 +33,8 @@ path.selection-outline {
     fill: none;
     stroke: var(--selection-outline-color);
     stroke-width: 10;
+    shape-rendering: crispEdges;
+    vector-effect: non-scaling-stroke;
 }
 
 .cell-select-match-overlay {

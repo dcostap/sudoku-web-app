@@ -79,8 +79,8 @@
     --badge-text-color: #ffffff;
     --badge-bg-color: #ff0000;
     --solved-text-color: #00a000;
-    --grid-line-color: #777777;
-    --grid-line-color-bold: #333333;
+    --grid-line-color: #000;
+    --grid-line-color-bold: #000;
     --mini-grid-line-color: #aaaaaa;
     --mini-grid-bar-color: #fff1a3;
     --mini-grid-bar-text-color: #333333;
@@ -92,7 +92,7 @@
     --error-fill-color: #ff111133;
     --error-text-color: #aa0000;
     --selection-outline-color: #7b9ee1;
-    --selected-fill-color: #004fe368;
+    --selected-fill-color: #ffeb7f;
     --matched-fill-color: #659bff44;
     --selected-matched-fill-color: #8bb3ff;
     --cell-bg-1-fill-color: transparent;
@@ -125,7 +125,7 @@
     --difficulty-indicator-label-color: #8f8f8f;
     --button-bg-color: #acddfb;
     --button-text-color: #333333;
-    --grid-line-width: 2;
+    --grid-line-width: 1;
     --grid-line-width-bold: 5;
     --hint-hot-spot-highlight-line-width: 7;
     --vkbd-bg-fill-color: #cccccc;
@@ -243,7 +243,11 @@
 }
 
 .ui-elements {
-    @apply w-full h-full flex flex-row flex-nowrap justify-evenly items-center mt-14;
+    @apply w-full h-full flex flex-row flex-nowrap items-center mt-14 justify-center;
+}
+
+.landscape .ui-elements {
+    @apply justify-center gap-12;
 }
 
 .portrait .ui-elements {
