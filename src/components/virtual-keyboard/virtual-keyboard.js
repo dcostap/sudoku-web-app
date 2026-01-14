@@ -21,10 +21,10 @@ export default function VirtualKeyboard({ dimensions, inputMode, completedDigits
         const isActive = inputMode === internalMode;
         return (
             <button 
-                className={`btn h-16 w-24 text-xl  active:scale-95 ${isActive ? 'btn-primary' : ''}`}
+                className={`btn h-12 sm:h-16 w-12 sm:w-24 active:scale-95 ${isActive ? 'btn-primary' : ''} shrink min-w-0 !px-0.5 sm:px-1`}
                 onClick={() => handleAction(`input-mode-${internalMode}`, internalMode === 'color')}
             >
-                {label}
+                <span className="text-[0.61rem] sm:text-base lg:text-xl truncate sm:normal-case font-bold sm:font-normal">{label}</span>
             </button>
         );
     };
@@ -33,7 +33,7 @@ export default function VirtualKeyboard({ dimensions, inputMode, completedDigits
         const isCompleted = completedDigits[num];
         return (
             <button 
-                className={`btn btn-primary h-16 w-16 text-2xl  active:scale-95 ${isCompleted ? 'opacity-25 cursor-default pointer-events-none' : ''}`}
+                className={`btn btn-primary h-12 sm:h-16 w-12 sm:w-16 text-lg sm:text-2xl active:scale-95 shrink min-w-0 !px-0 ${isCompleted ? 'opacity-25 cursor-default pointer-events-none' : ''}`}
                 onClick={() => !isCompleted && handleAction(num.toString(), true)}
                 disabled={isCompleted}
             >
@@ -50,11 +50,15 @@ export default function VirtualKeyboard({ dimensions, inputMode, completedDigits
     ];
 
     return (
-        <div className="flex flex-col gap-1 w-full max-w-[500px] mx-auto p-4 select-none bg-transparent touch-manipulation" onMouseDown={stopPropagation}>
-            <div className={`flex ${isCompact ? 'flex-row' : 'flex-col'} gap-2 justify-center`}>
-                <div className="flex gap-2 justify-center">
+        <div 
+            className="flex flex-col gap-1 w-full max-w-[500px] mx-auto p-4 select-none bg-transparent touch-manipulation" 
+            onMouseDown={stopPropagation}
+            style={!isCompact && dimensions?.vkbdWidth ? { maxWidth: dimensions.vkbdWidth } : {}}
+        >
+            <div className={`flex ${isCompact ? 'flex-row' : 'flex-col'} gap-2 sm:gap-3 justify-center`}>
+                <div className="flex gap-2 sm:gap-3 justify-center min-w-0">
                     {/* Modes Sidebar */}
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 sm:gap-3 shrink min-w-0">
                         {modeBtn('Normal', 'digit', 'digit')}
                         {modeBtn('Corner', 'outer', 'outer')}
                         {modeBtn('Centre', 'inner', 'inner')}
@@ -62,7 +66,7 @@ export default function VirtualKeyboard({ dimensions, inputMode, completedDigits
                     </div>
 
                     {/* Digits Grid */}
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3 shrink min-w-0">
                         {digitBtn(1)}
                         {digitBtn(2)}
                         {digitBtn(3)}
@@ -73,36 +77,36 @@ export default function VirtualKeyboard({ dimensions, inputMode, completedDigits
                         {digitBtn(8)}
                         {digitBtn(9)}
                         <button 
-                            className="btn h-16 text-xl col-span-3 active:scale-95"
+                            className="btn h-12 sm:h-16 active:scale-95 col-span-3 shrink min-w-0 !px-0"
                             onClick={() => handleAction('delete')}
                         >
-                            Delete
+                            <span className="text-sm sm:text-xl truncate">Delete</span>
                         </button>
                     </div>
                 </div>
 
                 {/* Actions Section */}
                 {isCompact ? (
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 sm:gap-3 shrink min-w-0">
                         {actions.map(a => (
                             <button 
                                 key={a.id}
-                                className="btn h-16 w-24 active:scale-95"
+                                className={`btn h-12 sm:h-16 w-12 sm:w-24 active:scale-95 shrink min-w-0 !px-0.5`}
                                 onClick={() => handleAction(a.id)}
                             >
-                                {a.label}
+                                <span className="text-[0.61rem] sm:text-base truncate sm:normal-case font-bold sm:font-normal">{a.label}</span>
                             </button>
                         ))}
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 gap-3 mt-3">
+                    <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-3">
                         {actions.map(a => (
                             <button 
                                 key={a.id}
-                                className="btn h-14 active:scale-95"
+                                className="btn h-10 sm:h-14 active:scale-95 shrink min-w-0 !px-0"
                                 onClick={() => handleAction(a.id)}
                             >
-                                {a.label}
+                                <span className="text-xs sm:text-xl truncate">{a.label}</span>
                             </button>
                         ))}
                     </div>

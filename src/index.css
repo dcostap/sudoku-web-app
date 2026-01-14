@@ -247,11 +247,11 @@
 }
 
 .landscape .ui-elements {
-    @apply justify-center gap-12;
+    @apply justify-center gap-4 lg:gap-12;
 }
 
 .portrait .ui-elements {
-    @apply flex-col;
+    @apply flex-col px-4 sm:px-8;
 }
 
 .buttons {
