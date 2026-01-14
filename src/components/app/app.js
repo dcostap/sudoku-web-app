@@ -583,7 +583,7 @@ function App() {
         ? (
             <div className="flex justify-center mt-6">
                 <button 
-                    className="btn" 
+                    className="btn-primary text-xl px-6 py-3" 
                     onClick={handleStart}
                 >
                     START PUZZLE

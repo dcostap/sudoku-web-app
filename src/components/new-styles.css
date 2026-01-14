@@ -9,7 +9,7 @@
       inline-flex items-center justify-center
       px-5 py-2.5
       rounded-md
-      text-sm font-medium
+      font-medium
       border
       transition-colors duration-150
       focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
@@ -25,151 +25,135 @@
 
   .btn-primary {
     @apply
-      bg-neutral-900 text-white border-neutral-900
+      inline-flex items-center justify-center
+      px-5 py-2.5
+      rounded-md
+      font-medium
+      border
+      transition-colors duration-150
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+      bg-neutral-800 text-white border-neutral-800
       hover:bg-neutral-800
       focus-visible:ring-neutral-500
-      dark:bg-white dark:text-neutral-900 dark:border-neutral-200
-      dark:hover:bg-neutral-100;
+      ring-offset-white
+      dark:bg-neutral-900 dark:text-white dark:border-neutral-700
+      dark:hover:bg-neutral-800
+      dark:focus-visible:ring-neutral-800
+      dark:ring-offset-neutral-900;
   }
 }
 /* =========================
-   Virtual Keyboard Theme
+   Virtual Keyboard Design
    ========================= */
 
-:root {
-  /* keyboard shell */
-  --vkbd-bg-fill-color: #e5e5e5;
-
-  /* keys */
-  --vkbd-button-fill-color: #ffffff;
-  --vkbd-button-text-color: #111827;
-  --vkbd-button-stroke-color: rgba(0, 0, 0, 0.08);
-
-  /* completed / active */
-  --vkbd-completed-button-text-color: #2563eb;
-
-  /* mode panel */
-  --vkbd-mode-panel-fill-color: #d4d4d4;
-  --vkbd-mode-text-color: #374151;
-  --vkbd-active-mode-fill-color: #ffffff;
-  --vkbd-mode-icon-fill-color: #6b7280;
-  --vkbd-active-mode-icon-fill-color: #111827;
-
-  /* shadows */
-  --vkbd-shadow-soft: 0 1px 1.5px rgba(0, 0, 0, 0.06);
-  --vkbd-shadow-pressed: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+.vkbd-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 16px;
+  user-select: none;
+  background-color: transparent;
+  touch-action: manipulation;
 }
 
-.dark {
-  --vkbd-bg-fill-color: #1f2933;
-
-  --vkbd-button-fill-color: #2b3440;
-  --vkbd-button-text-color: #f9fafb;
-  --vkbd-button-stroke-color: rgba(255, 255, 255, 0.08);
-
-  --vkbd-completed-button-text-color: #60a5fa;
-
-  --vkbd-mode-panel-fill-color: #111827;
-  --vkbd-mode-text-color: #9ca3af;
-  --vkbd-active-mode-fill-color: #2b3440;
-  --vkbd-mode-icon-fill-color: #9ca3af;
-  --vkbd-active-mode-icon-fill-color: #f9fafb;
-
-  --vkbd-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.45);
-  --vkbd-shadow-pressed: inset 0 1px 2px rgba(0, 0, 0, 0.65);
-}
-
-/* keyboard shell */
-
-.vkbd-background {
-  fill: var(--vkbd-bg-fill-color);
-  rx: 16;
-}
-
-/* keys */
-
-.vkbd-button-bg {
-  fill: var(--vkbd-button-fill-color);
-  stroke: var(--vkbd-button-stroke-color);
-  stroke-width: 1;
-  rx: 10;
-  filter: drop-shadow(var(--vkbd-shadow-soft));
-  transition:
-    fill 120ms ease,
-    transform 80ms ease,
-    filter 80ms ease,
-    stroke 120ms ease;
-}
-
-.vkbd-button-bg:active {
-  transform: translateY(1px);
-  filter: drop-shadow(var(--vkbd-shadow-pressed));
-}
-
-/* text & icons */
-
-.vkbd text,
-.vkbd path {
-  fill: var(--vkbd-button-text-color);
-  font-weight: 500;
-  transition: fill 120ms ease;
-}
-
-.vkbd .completed text {
-  fill: var(--vkbd-completed-button-text-color);
+.vk-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  border-radius: 12px;
+  font-size: 26px;
   font-weight: 600;
+  transition: all 0.15s ease-in-out;
+  border: 1.5px solid #d1d5db;
+  background-color: white;
+  color: #6b21a8;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-/* mode panel */
-
-.vkbd-mode-panel .background {
-  fill: var(--vkbd-mode-panel-fill-color);
-  rx: 12;
+.vk-btn:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
 }
 
-.vkbd-mode-panel text {
-  fill: var(--vkbd-mode-text-color);
-  font-weight: 500;
+.vk-btn:active {
+  transform: scale(0.96);
+  background-color: #f3f4f6;
 }
 
-.vkbd-mode-panel .button-bg {
-  fill: var(--vkbd-button-fill-color);
-  stroke: var(--vkbd-button-stroke-color);
-  stroke-width: 1;
-  rx: 8;
+/* Purple buttons (Digits) */
+.vk-btn-primary {
+  background-color: #6b21a8;
+  color: white;
+  border-color: #6b21a8;
 }
 
-/* active mode */
-
-.vkbd-mode-panel .active-mode-bg {
-  fill: var(--vkbd-active-mode-fill-color);
-  stroke: var(--vkbd-button-stroke-color);
-  stroke-width: 1;
-  rx: 8;
-  filter: drop-shadow(var(--vkbd-shadow-soft));
-  transition:
-    transform 120ms ease,
-    fill 120ms ease;
+.vk-btn-primary:hover {
+  background-color: #581c87;
+  border-color: #581c87;
 }
 
-/* mode icons */
-
-.vkbd .mode-button-icon {
-  fill: var(--vkbd-mode-icon-fill-color);
-  transition: fill 80ms ease;
+/* Active Mode Button */
+.vk-btn-active {
+  background-color: #6b21a8 !important;
+  color: white !important;
+  border-color: #6b21a8 !important;
 }
 
-.vkbd .mode-button-icon.active {
-  fill: var(--vkbd-active-mode-icon-fill-color);
+.vk-btn-active:hover {
+  background-color: #581c87 !important;
 }
 
-/* color mode buttons */
-
-.vkbd .input-mode-color rect {
-  opacity: 0.55;
-  transition: opacity 80ms ease;
+/* Span buttons */
+.vk-btn-span-3 {
+  grid-column: span 3;
 }
 
-.vkbd .input-mode-color.active rect {
-  opacity: 1;
+.vk-btn-span-2 {
+  grid-column: span 2;
 }
+
+/* Specific text sizing for labels */
+.vk-btn-label {
+  font-size: 20px;
+  padding: 0 8px;
+}
+
+.vkbd-digit-completed {
+  opacity: 0.25;
+  cursor: default;
+  pointer-events: none;
+}
+
+.dark .vk-btn {
+  background-color: #111827;
+  border-color: #374151;
+  color: #a855f7;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.dark .vk-btn:hover {
+  background-color: #1f2937;
+  border-color: #4b5563;
+}
+
+.dark .vk-btn-primary {
+  background-color: #7e22ce;
+  border-color: #7e22ce;
+  color: white;
+}
+
+.dark .vk-btn-primary:hover {
+  background-color: #9333ea;
+}
+
+.dark .vk-btn-active {
+  background-color: #7e22ce !important;
+  color: white !important;
+  border-color: #7e22ce !important;
+}
+
