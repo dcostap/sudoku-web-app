@@ -99,11 +99,7 @@ function newCell(index, digit) {
 }
 
 export function newSudokuModel({initialDigits, difficultyLevel, onPuzzleStateChange, entryPoint, skipCheck, showModal, mode: forcedMode}) {
-    initialDigits = (initialDigits || '').replace(/[_.-]/g, '0');
-    if (initialDigits.length < 81) {
-        initialDigits = expandPuzzleDigits(initialDigits);
-    }
-    initialDigits = initialDigits.replace(/\D/g, '')
+    initialDigits = modelHelpers.normalizeDigits(initialDigits);
     const initialError = skipCheck ? undefined : modelHelpers.initialErrorCheck(initialDigits);
     const mode = forcedMode || ((initialError || initialDigits === '0'.repeat(81)) ? 'enter' : 'solve');
     const settings = modelHelpers.loadSettings();
@@ -249,6 +245,14 @@ export const modelHelpers = {
     difficultyLevelName: (value) => {
         const level = difficultyLevels.find(lvl => lvl.value === value) || {};
         return level.name;
+    },
+
+    normalizeDigits: (digits) => {
+        digits = (digits || '').replace(/[_.-]/g, '0');
+        if (digits.length > 0 && digits.length < 81) {
+            digits = expandPuzzleDigits(digits);
+        }
+        return digits.replace(/\D/g, '');
     },
 
     initialErrorCheck: (initialDigits) => {

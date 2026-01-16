@@ -33,10 +33,10 @@ const inputModeFromHotKey = {
 
 function initialGridFromURL () {
     const params = new URLSearchParams(window.location.search);
-    const initialDigits = params.get('s');
+    const initialDigits = modelHelpers.normalizeDigits(params.get('s'));
     
     // If it is 'new' puzzle mode, create a blank grid
-    if (params.has('new') && !initialDigits) {
+    if (params.has('new') && !params.get('s')) {
         return newSudokuModel({
             initialDigits: '0'.repeat(81),
             skipCheck: true,
@@ -800,7 +800,7 @@ function App() {
                     grid={grid}
                     gridId="main-grid"
                     dimensions={dimensions}
-                    isPaused={!!pausedAt || isReplayMode}
+                    isPaused={!!pausedAt}
                     mouseDownHandler={isReplayMode ? null : mouseDownHandler}
                     mouseOverHandler={isReplayMode ? null : mouseOverHandler}
                     inputHandler={isReplayMode ? null : inputHandler}

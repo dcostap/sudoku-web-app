@@ -33,6 +33,7 @@ function ReplayControls({ grid, setGrid, modelHelpers }) {
     }, [setGrid, modelHelpers, totalSteps]);
     
     const handleSliderChange = useCallback((e) => {
+        setIsPlaying(false);
         const step = parseInt(e.target.value, 10);
         setGrid(g => modelHelpers.replayGoToStep(g, step));
     }, [setGrid, modelHelpers]);
@@ -65,88 +66,94 @@ function ReplayControls({ grid, setGrid, modelHelpers }) {
     const statusText = solved ? 'Solved' : 'Abandoned';
     const statusClass = solved ? 'status-solved' : 'status-abandoned';
     
+    const stopPropagation = (e) => e.stopPropagation();
+    
     return (
-        <div className="replay-controls">
+        <div className="replay-controls" onMouseDown={stopPropagation}>
             <div className="replay-header">
-                <h2>Replay Mode</h2>
-                <span className={`replay-status ${statusClass}`}>{statusText}</span>
-                <span className="replay-time">
-                    Total time: {minutes}m {seconds}s
-                </span>
-            </div>
-            
-            <div className="replay-progress">
-                <div className="replay-step-info">
-                    Move {replayStep} of {totalSteps}
+                <div className="flex items-center gap-3">
+                    <h2 className="hidden sm:block">Replay Mode</h2>
+                    <span className="replay-step-info">
+                        Move {replayStep} of {totalSteps}
+                    </span>
+                    <span className={`replay-status ${statusClass}`}>{statusText}</span>
+                    <span className="replay-time">
+                        {minutes}m {seconds}s
+                    </span>
                 </div>
-                <input 
-                    type="range" 
-                    min="0" 
-                    max={totalSteps}
-                    value={replayStep}
-                    onChange={handleSliderChange}
-                    className="replay-slider"
-                />
-            </div>
-            
-            <div className="replay-buttons">
-                <button 
-                    onClick={goToStart} 
-                    disabled={replayStep === 0}
-                    title="Go to start"
-                    className="replay-btn"
-                >
-                    ⏮
-                </button>
-                <button 
-                    onClick={stepBackward} 
-                    disabled={replayStep === 0}
-                    title="Previous move"
-                    className="replay-btn"
-                >
-                    ◀
-                </button>
-                <button 
-                    onClick={togglePlayback}
-                    title={isPlaying ? "Pause" : "Play"}
-                    className="replay-btn replay-btn-play"
-                >
-                    {isPlaying ? '⏸' : '▶'}
-                </button>
-                <button 
-                    onClick={stepForward} 
-                    disabled={replayStep === totalSteps}
-                    title="Next move"
-                    className="replay-btn"
-                >
-                    ▶
-                </button>
-                <button 
-                    onClick={goToEnd} 
-                    disabled={replayStep === totalSteps}
-                    title="Go to end"
-                    className="replay-btn"
-                >
-                    ⏭
-                </button>
-                
-                <div className="replay-speed-control">
-                    <label>Speed:</label>
-                    <select 
-                        value={playbackSpeed} 
-                        onChange={(e) => setPlaybackSpeed(parseInt(e.target.value, 10))}
-                        className="replay-speed-select"
-                    >
-                        <option value={2000}>0.5x</option>
-                        <option value={1000}>1x</option>
-                        <option value={500}>2x</option>
-                        <option value={250}>4x</option>
-                    </select>
-                </div>
-                
                 <a href="/" className="replay-btn-home">
                     Exit Replay
                 </a>
+            </div>
+            
+            <div className="replay-main-controls">
+                <div className="replay-buttons">
+                    <button 
+                        onClick={goToStart} 
+                        disabled={replayStep === 0}
+                        title="Go to start"
+                        className="replay-btn"
+                    >
+                        ⏮
+                    </button>
+                    <button 
+                        onClick={stepBackward} 
+                        disabled={replayStep === 0}
+                        title="Previous move"
+                        className="replay-btn"
+                    >
+                        ◀
+                    </button>
+                    <button 
+                        onClick={togglePlayback}
+                        title={isPlaying ? "Pause" : "Play"}
+                        className="replay-btn replay-btn-play"
+                    >
+                        {isPlaying ? '⏸' : '▶'}
+                    </button>
+                    <button 
+                        onClick={stepForward} 
+                        disabled={replayStep === totalSteps}
+                        title="Next move"
+                        className="replay-btn"
+                    >
+                        ▶
+                    </button>
+                    <button 
+                        onClick={goToEnd} 
+                        disabled={replayStep === totalSteps}
+                        title="Go to end"
+                        className="replay-btn"
+                    >
+                        ⏭
+                    </button>
+                    
+                    <div className="replay-speed-control">
+                        <select 
+                            value={playbackSpeed} 
+                            onChange={(e) => setPlaybackSpeed(parseInt(e.target.value, 10))}
+                            className="replay-speed-select"
+                        >
+                            <option value={2000}>0.5x</option>
+                            <option value={1000}>1x</option>
+                            <option value={500}>2x</option>
+                            <option value={250}>4x</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className="replay-slider-container">
+                    <input 
+                        type="range" 
+                        min="0" 
+                        max={totalSteps}
+                        value={replayStep}
+                        onInput={handleSliderChange}
+                        onMouseDown={() => setIsPlaying(false)}
+                        onTouchStart={() => setIsPlaying(false)}
+                        className="replay-slider"
+                    />
+                </div>
             </div>
         </div>
     );

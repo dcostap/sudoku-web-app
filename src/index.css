@@ -246,6 +246,10 @@
     @apply w-full h-full flex flex-row flex-nowrap items-center mt-14 justify-center;
 }
 
+.mode-replay .ui-elements {
+    @apply mt-32 md:mt-24;
+}
+
 .landscape .ui-elements {
     @apply justify-center gap-4 lg:gap-12;
 }

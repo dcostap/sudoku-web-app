@@ -1,17 +1,17 @@
 .replay-controls {
-    @apply fixed top-0 left-0 right-0 bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-2xl z-50 p-4;
+    @apply fixed top-0 left-0 right-0 bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-2xl z-50 p-2 md:p-3;
 }
 
 .replay-header {
-    @apply flex items-center justify-between mb-3 flex-wrap gap-2;
+    @apply flex items-center justify-between mb-2 flex-wrap gap-2;
 }
 
 .replay-header h2 {
-    @apply text-xl md:text-2xl font-bold m-0;
+    @apply text-lg md:text-xl font-bold m-0;
 }
 
 .replay-status {
-    @apply px-3 py-1 text-sm font-semibold rounded-full;
+    @apply px-2 py-0.5 text-xs font-semibold rounded-full;
 }
 
 .replay-status.status-solved {
@@ -23,77 +23,81 @@
 }
 
 .replay-time {
-    @apply text-sm opacity-90;
-}
-
-.replay-progress {
-    @apply mb-3;
+    @apply text-xs opacity-90;
 }
 
 .replay-step-info {
-    @apply text-sm mb-2 text-center font-semibold;
+    @apply text-sm font-bold;
 }
 
-.replay-slider {
-    @apply w-full h-2 bg-white/30 rounded-lg appearance-none cursor-pointer;
-}
-
-.replay-slider::-webkit-slider-thumb {
-    @apply appearance-none w-4 h-4 bg-white rounded-full cursor-pointer shadow-lg;
-}
-
-.replay-slider::-moz-range-thumb {
-    @apply w-4 h-4 bg-white rounded-full cursor-pointer border-0 shadow-lg;
+.replay-main-controls {
+    @apply flex items-center gap-4 flex-wrap md:flex-nowrap;
 }
 
 .replay-buttons {
-    @apply flex items-center justify-center gap-2 flex-wrap;
+    @apply flex items-center gap-1.5;
+}
+
+.replay-slider-container {
+    @apply flex-grow min-w-[150px];
+}
+
+.replay-slider {
+    @apply w-full h-2 bg-white/30 rounded-lg appearance-none cursor-pointer my-1;
+}
+
+.replay-slider::-webkit-slider-thumb {
+    @apply appearance-none w-5 h-5 bg-white rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform;
+}
+
+.replay-slider::-moz-range-thumb {
+    @apply w-5 h-5 bg-white rounded-full cursor-pointer border-0 shadow-lg hover:scale-110 transition-transform;
 }
 
 .replay-btn {
-    @apply px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg font-bold text-lg transition-all duration-200 border-none cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed active:scale-95;
-    min-width: 44px;
+    @apply px-2.5 py-1 bg-white/20 hover:bg-white/30 rounded font-bold text-base transition-all duration-200 border-none cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed active:scale-95;
+    min-width: 36px;
 }
 
 .replay-btn-play {
-    @apply bg-white/30 hover:bg-white/40 px-6;
+    @apply bg-white/30 hover:bg-white/40 px-4;
 }
 
 .replay-speed-control {
-    @apply flex items-center gap-2 ml-4;
-}
-
-.replay-speed-control label {
-    @apply text-sm font-semibold;
+    @apply flex items-center;
 }
 
 .replay-speed-select {
-    @apply px-2 py-1 bg-white/20 hover:bg-white/30 rounded border-none text-white font-semibold cursor-pointer;
+    @apply px-1.5 py-0.5 bg-white/20 hover:bg-white/30 rounded border-none text-white text-xs font-semibold cursor-pointer;
 }
 
 .replay-btn-home {
-    @apply ml-auto px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg font-semibold transition-all duration-200 no-underline text-white active:scale-95;
+    @apply px-3 py-1 bg-red-500 hover:bg-red-600 rounded font-semibold text-sm transition-all duration-200 no-underline text-white active:scale-95;
 }
 
 @media (max-width: 768px) {
     .replay-controls {
-        @apply p-3;
+        @apply p-2;
     }
     
-    .replay-header h2 {
-        @apply text-lg;
+    .replay-header {
+        @apply mb-1.5;
+    }
+    
+    .replay-main-controls {
+        @apply gap-2;
+    }
+    
+    .replay-buttons {
+        @apply w-full justify-between;
+    }
+    
+    .replay-slider-container {
+        @apply w-full;
     }
     
     .replay-btn {
-        @apply px-3 py-1.5 text-base;
-        min-width: 36px;
-    }
-    
-    .replay-speed-control {
-        @apply ml-0 w-full justify-center mt-2;
-    }
-    
-    .replay-btn-home {
-        @apply w-full mt-2;
+        @apply px-2 py-1 text-sm;
+        min-width: 32px;
     }
 }
