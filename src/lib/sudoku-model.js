@@ -255,6 +255,22 @@ export const modelHelpers = {
         return digits.replace(/\D/g, '');
     },
 
+    getPuzzleUrl: (puzzle, shortenLinks) => {
+        const digits = puzzle.initialDigits || puzzle.digits || (typeof puzzle === 'string' ? puzzle : '');
+        const puzzleString = shortenLinks ? compressPuzzleDigits(digits) : digits;
+        
+        let difficulty = puzzle.difficultyLevel || puzzle.difficulty;
+        // Map difficulty names to numbers if necessary
+        const diffMap = { 'easy': '1', 'medium': '2', 'hard': '3', 'expert': '4' };
+        if (difficulty && diffMap[String(difficulty).toLowerCase()]) {
+            difficulty = diffMap[String(difficulty).toLowerCase()];
+        }
+        
+        const diffParam = difficulty ? `&d=${difficulty}` : '';
+        const isSaved = puzzle.status === 'draft' || puzzle.mode === 'enter' || (puzzle.puzzleStateKey && puzzle.puzzleStateKey.startsWith('save-'));
+        return `./?s=${puzzleString}${diffParam}${isSaved ? '&r=1' : ''}`;
+    },
+
     initialErrorCheck: (initialDigits) => {
         if (initialDigits === undefined || initialDigits === null || initialDigits === '') {
             return { noStartingDigits: true };
@@ -465,7 +481,14 @@ export const modelHelpers = {
         return Object.keys(localStorage)
             .map((k) => {
                 if (k.match(/^save-/)) {
-                    return modelHelpers.parsePuzzleState(k);
+                    const ps = modelHelpers.parsePuzzleState(k);
+                    if (ps) {
+                        const nytInfo = modelHelpers.getNYTInfo(ps.initialDigits);
+                        ps.isNYT = !!nytInfo;
+                        ps.date = ps.date ? new Date(ps.date) : (nytInfo ? nytInfo.date : new Date(ps.lastUpdatedTime));
+                        ps.id = ps.puzzleStateKey;
+                    }
+                    return ps;
                 }
                 return null;
             })
@@ -479,6 +502,12 @@ export const modelHelpers = {
             .forEach(k => {
                 localStorage.removeItem(k);
             });
+    },
+
+    deleteSavedPuzzle: (puzzleId) => {
+        if (!puzzleId) return;
+        const key = puzzleId.startsWith('save-') ? puzzleId : ('save-' + puzzleId);
+        localStorage.removeItem(key);
     },
 
     archivePuzzleState: (grid, status) => {
@@ -567,10 +596,23 @@ export const modelHelpers = {
                     console.log('Found history for', key, ':', history.length, 'attempts');
                     // Add each history entry with its puzzle
                     history.forEach((entry, attemptIndex) => {
+                        const initialDigits = entry.initialDigits;
+                        const currentSnapshot = entry.currentSnapshot;
+                        const completedDigits = initialDigits.split('');
+                        ((currentSnapshot || '').match(/(\d\dD\d)/g) || []).forEach(sn => {
+                            const [rc, digit] = sn.split(/D/);
+                            completedDigits[ indexFromRC(rc) ] = digit;
+                        });
+
+                        const nytInfo = modelHelpers.getNYTInfo(initialDigits);
+
                         historyItems.push({
                             ...entry,
+                            completedDigits: completedDigits.join(''),
                             historyKey: key,
                             attemptIndex: attemptIndex,
+                            isNYT: !!nytInfo,
+                            date: entry.date ? new Date(entry.date) : (nytInfo ? nytInfo.date : new Date(entry.archivedAt)),
                         });
                     });
                 } catch (e) {

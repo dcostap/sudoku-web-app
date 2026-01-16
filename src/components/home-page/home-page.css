@@ -72,7 +72,7 @@
 }
 
 .tab-panels {
-    @apply flex-1 overflow-y-auto touch-pan-y min-h-0 py-6;
+    @apply flex-1 overflow-y-auto touch-pan-y min-h-0;
 }
 
 .tab-item {

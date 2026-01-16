@@ -134,6 +134,13 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
         }
     };
 
+    const handleDiscard = (puzzleId) => {
+        if (window.confirm('Are you sure you want to discard this puzzle progress?')) {
+            modelHelpers.deleteSavedPuzzle(puzzleId);
+            loadPuzzles();
+        }
+    };
+
     const renderInProgressPuzzles = () => {
         if (inProgressPuzzles.length === 0) {
             return (
@@ -152,6 +159,22 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
                         showRatings={showRatings}
                         shortenLinks={shortenLinks}
                         type="saved"
+                        actions={
+                            <>
+                                <a 
+                                    href={modelHelpers.getPuzzleUrl(puzzle, shortenLinks)}
+                                    className="btn-small btn-primary"
+                                >
+                                    Resume
+                                </a>
+                                <button 
+                                    className="btn-small btn-secondary"
+                                    onClick={() => handleDiscard(puzzle.id)}
+                                >
+                                    Discard
+                                </button>
+                            </>
+                        }
                     />
                 ))}
             </div>

@@ -1,9 +1,8 @@
-import SavedPuzzleGrid from "../saved-puzzle/saved-puzzle-grid";
-import SavedPuzzleMetadata from "../saved-puzzle/saved-puzzle-metadata";
+import PuzzleItem from "../puzzle-item/puzzle-item";
 
 function ModalResumeRestart({modalState, modalHandler}) {
     const {puzzleState, showRatings} = modalState;
-    const {puzzleStateKey, difficultyLevel, startTime, lastUpdatedTime, elapsedTime} = puzzleState;
+    const {puzzleStateKey} = puzzleState;
     const resumeHandler = () => modalHandler({
         action: 'resume-saved-puzzle',
         puzzleStateKey
@@ -17,16 +16,12 @@ function ModalResumeRestart({modalState, modalHandler}) {
             <h1>Continue or start over?</h1>
             <p>You've made a start on this puzzle already. You can either pick up
             where you left off, or start again from the beginning.</p>
-            <div className="saved-puzzle">
-                <SavedPuzzleGrid
-                    puzzleState={puzzleState}
+            <div className="mb-8">
+                <PuzzleItem
+                    puzzle={puzzleState}
                     showRatings={showRatings}
-                />
-                <SavedPuzzleMetadata
-                    difficultyLevel={difficultyLevel}
-                    startTime={startTime}
-                    lastUpdatedTime={lastUpdatedTime}
-                    elapsedTime={elapsedTime}
+                    type="saved"
+                    onClick={resumeHandler}
                 />
             </div>
             <div className="buttons">

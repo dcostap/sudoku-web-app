@@ -1,162 +1,99 @@
 import { modelHelpers } from '../../lib/sudoku-model';
-import { compressPuzzleDigits } from '../../lib/string-utils';
+import { secondsAsHMS } from '../../lib/string-utils';
 import SudokuMiniGrid from '../sudoku-grid/sudoku-mini-grid';
 import './puzzle-item.css';
 
-function stopPropagation(e) {
+const stopPropagation = (e) => {
     if (e) e.stopPropagation();
-}
+};
 
-function PuzzleItem({ 
-    puzzle, 
-    showRatings, 
-    shortenLinks,
-    type = 'nyt', // 'nyt', 'saved', 'history'
-}) {
-    const digits = puzzle.initialDigits || puzzle.digits;
-    const puzzleString = shortenLinks
-        ? compressPuzzleDigits(digits)
-        : digits;
-
-    const nytInfo = modelHelpers.getNYTInfo(digits);
+function PuzzleItem({ puzzle, type = 'nyt', showRatings, shortenLinks, onClick, actions }) {
+    const puzzleUrl = modelHelpers.getPuzzleUrl(puzzle, shortenLinks);
     
-    // Map difficulty to level number for URL compatibility
-    const difficultyLevelMap = {
-        'easy': '1',
-        'medium': '2',
-        'hard': '3',
-        'expert': '4',
+    // Normalize difficulty mapping
+    const difficultyMap = {
+        '1': 'easy',
+        '2': 'medium',
+        '3': 'hard',
+        'easy': 'easy',
+        'medium': 'medium',
+        'hard': 'hard',
+        'expert': 'expert'
     };
     
-    const difficulty = puzzle.difficulty || (nytInfo && nytInfo.difficulty) || puzzle.difficultyRating;
-    const level = difficultyLevelMap[difficulty] || puzzle.difficultyLevel || '3';
+    const difficultyKey = puzzle.difficultyLevel || puzzle.difficulty;
+    const difficultyLevel = difficultyMap[String(difficultyKey).toLowerCase()] || 'easy';
 
-    // Format date properly
-    let dateStr = '';
-    if (nytInfo && nytInfo.date) {
-        dateStr = nytInfo.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-    } else if (puzzle.date) { // For NYT puzzles passed directly
+    const renderNYTTag = () => (
+        <div className="nyt-tag" title="New York Times Sudoku">
+            <span className="nyt-icon">T</span> NYT Crossword
+        </div>
+    );
+
+    const renderStatusBadge = () => {
+        if (type === 'nyt') return null;
+        const status = (puzzle.status || (puzzle.isSolved ? 'solved' : 'draft')).toLowerCase();
+        let label = status;
+        if (status === 'solved') label = '✓ Solved';
+        if (status === 'draft' || status === 'enter') label = '✎ Draft';
+        if (status === 'abandoned') label = 'Abandoned';
+        
+        const className = (status === 'enter' ? 'draft' : status);
+        return <span className={`status-badge ${className}`}>{label}</span>;
+    };
+
+    const timeString = puzzle.elapsedTime ? secondsAsHMS(Math.floor(puzzle.elapsedTime / 1000)) : null;
+
+    // Date formatting
+    let dateStr = 'Unknown Date';
+    if (puzzle.date) {
         const d = puzzle.date instanceof Date ? puzzle.date : new Date(puzzle.date);
         dateStr = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-    } else if (puzzle.lastUpdatedTime || puzzle.archivedAt) {
-        dateStr = new Date(puzzle.lastUpdatedTime || puzzle.archivedAt).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+    } else if (puzzle.lastPlayed) {
+        const d = new Date(puzzle.lastPlayed);
+        dateStr = d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     }
 
-    const difficultyBadge = difficulty
-        ? <span className={`difficulty-badge ${difficulty}`}>{difficulty}</span>
-        : null;
+    const defaultActions = type === 'history' ? (
+        <>
+            <a 
+                href={`${puzzleUrl}&replay=1`} 
+                className="btn-small btn-secondary text-primary-600 border-primary-100 hover:bg-primary-50"
+            >
+                ▶ Replay
+            </a>
+            <a 
+                href={puzzleUrl} 
+                className="btn-small btn-primary"
+            >
+                {puzzle.status === 'draft' || puzzle.mode === 'enter' ? '✎ Resume' : '↻ Again'}
+            </a>
+        </>
+    ) : null;
 
-    const url = `./?s=${puzzleString}&d=${level}${type === 'saved' ? '&r=1' : ''}`;
+    const itemActions = actions || defaultActions;
 
-    const formatElapsedTime = (elapsedTime) => {
-        if (!elapsedTime) return '0s';
-        const seconds = Math.floor(elapsedTime / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        
-        if (hours > 0) {
-            return `${hours}h ${minutes % 60}m`;
-        } else if (minutes > 0) {
-            return `${minutes}m ${seconds % 60}s`;
-        } else {
-            return `${seconds}s`;
-        }
-    };
-
-    if (type === 'nyt') {
-        return (
-            <div className="puzzle-item nyt">
-                <a href={url} onClick={stopPropagation}>
-                    <SudokuMiniGrid puzzle={{ digits, difficulty }} showRatings={showRatings} />
-                    <div className="puzzle-info">
-                        <div className="puzzle-date">{dateStr}</div>
-                        {difficultyBadge}
-                    </div>
-                </a>
-            </div>
-        );
-    }
-
-    if (type === 'saved') {
-        return (
-            <div className="puzzle-item saved">
-                <a href={url} onClick={stopPropagation}>
-                    <SudokuMiniGrid 
-                        puzzle={{ 
-                            digits: puzzle.completedDigits || puzzle.initialDigits,
-                            difficulty: difficulty
-                        }} 
-                        showRatings={showRatings} 
-                    />
-                    <div className="puzzle-info">
-                        <div className="puzzle-time">
-                            <strong>Time:</strong> {formatElapsedTime(puzzle.elapsedTime)}
-                        </div>
-                        <div className="puzzle-date">
-                            {nytInfo ? `NYT ${nytInfo.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : `Last played: ${dateStr}`}
-                        </div>
-                        {nytInfo && (
-                            <div className="nyt-tag">
-                                <span className="nyt-icon">NYT</span>
-                                {nytInfo.difficulty}
-                            </div>
-                        )}
-                    </div>
-                </a>
-            </div>
-        );
-    }
-
-    if (type === 'history') {
-        const isDraft = puzzle.mode === 'enter';
-        let statusBadge = puzzle.status === 'solved' 
-            ? <span className="status-badge solved">✓ Solved</span>
-            : <span className="status-badge abandoned">Abandoned</span>;
-
-        if (isDraft) {
-            statusBadge = <span className="status-badge draft">✎ Draft</span>;
-        }
-
-        const replayUrl = `./?s=${puzzleString}&d=${level}&replay=1&attempt=${puzzle.attemptIndex}`;
-        const solveAgainUrl = `./?s=${puzzleString}&d=${level}${isDraft ? '&mode=enter' : ''}`;
-
-        return (
-            <div className="puzzle-item history">
-                <SudokuMiniGrid 
-                    puzzle={{ 
-                        digits: puzzle.initialDigits,
-                        difficulty: difficulty
-                    }} 
-                    showRatings={showRatings} 
-                />
+    return (
+        <div className={`puzzle-item ${type}`}>
+            <a href={onClick ? '#' : puzzleUrl} onClick={onClick || undefined}>
+                <SudokuMiniGrid puzzle={puzzle} size={84} />
                 <div className="puzzle-info">
-                    {statusBadge}
-                    <div className="puzzle-time">
-                        <strong>Time:</strong> {formatElapsedTime(puzzle.elapsedTime)}
-                    </div>
-                    <div className="puzzle-date">
-                        {nytInfo ? `NYT - ${dateStr}` : `History: ${dateStr}`}
-                    </div>
-                    <div className="puzzle-actions">
-                        <a href={replayUrl} className="btn-small btn-secondary" onClick={stopPropagation}>
-                            ▶ Replay
-                        </a>
-                        <a href={solveAgainUrl} className="btn-small btn-primary" onClick={stopPropagation}>
-                            {isDraft ? '✎ Continue' : '↻ Again'}
-                        </a>
-                    </div>
+                    {renderStatusBadge()}
+                    <span className={`difficulty-badge ${difficultyLevel}`}>
+                        {difficultyLevel}
+                    </span>
+                    <span className="puzzle-date">{dateStr}</span>
+                    {timeString && <span className="puzzle-time">{timeString}</span>}
+                    {puzzle.isNYT && renderNYTTag()}
                 </div>
-            </div>
-        );
-    }
-
-    return null;
+            </a>
+            {itemActions && (
+                <div className="puzzle-actions" onClick={stopPropagation}>
+                    {itemActions}
+                </div>
+            )}
+        </div>
+    );
 }
 
 export default PuzzleItem;

@@ -4,36 +4,35 @@
 }
 
 .puzzle-item:hover {
-    @apply border-primary-300 shadow-md transform scale-[1.02];
+    @apply border-primary-300 shadow-md transform scale-[1.01];
 }
 
 .puzzle-item a {
-    @apply flex flex-col no-underline text-inherit h-full;
-}
-
-.puzzle-info {
-    @apply p-3 flex flex-col gap-1 flex-1;
-}
-
-/* NYT specific style */
-.puzzle-item.nyt {
-    @apply flex flex-col items-center;
+    @apply flex flex-row items-center no-underline text-inherit p-3 gap-4;
 }
 
 .puzzle-item.nyt a {
-    @apply items-center text-center w-full;
+    @apply flex-col p-2 text-center;
+}
+
+.puzzle-info {
+    @apply flex flex-col gap-0.5 flex-1 min-w-0;
 }
 
 .puzzle-item.nyt .puzzle-info {
-    @apply p-2 pt-0;
+    @apply items-center;
 }
 
 .puzzle-date {
-    @apply text-[11px] font-bold text-gray-900 block;
+    @apply text-[11px] font-bold text-gray-900 block truncate;
 }
 
 .difficulty-badge {
-    @apply text-[9px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded-sm self-center;
+    @apply text-[9px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded-sm self-start;
+}
+
+.puzzle-item.nyt .difficulty-badge {
+    @apply self-center;
 }
 
 .difficulty-badge.easy { @apply bg-emerald-100 text-emerald-700; }
@@ -41,23 +40,16 @@
 .difficulty-badge.hard { @apply bg-rose-100 text-rose-700; }
 .difficulty-badge.expert { @apply bg-slate-800 text-white; }
 
-/* Saved/History specific styles */
-.puzzle-item.saved .puzzle-info,
-.puzzle-item.history .puzzle-info {
-    @apply p-4;
-}
-
 .puzzle-time {
     @apply text-sm font-medium text-gray-900;
 }
 
-.puzzle-item.saved .puzzle-date,
-.puzzle-item.history .puzzle-date {
-    @apply text-xs text-gray-400;
+.puzzle-item.nyt .puzzle-time {
+    @apply hidden;
 }
 
 .nyt-tag {
-    @apply mt-2 inline-flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-100;
+    @apply mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-100 self-start;
 }
 
 .nyt-icon {
@@ -65,7 +57,7 @@
 }
 
 .status-badge {
-    @apply inline-flex items-center self-start px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full mb-2;
+    @apply inline-flex items-center self-start px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full mb-1;
 }
 
 .status-badge.solved { @apply bg-green-100 text-green-700; }
@@ -73,11 +65,11 @@
 .status-badge.draft { @apply bg-blue-100 text-blue-700; }
 
 .puzzle-actions {
-    @apply grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-gray-50;
+    @apply flex gap-2 p-3 pt-0;
 }
 
 .puzzle-item .btn-small {
-    @apply px-3 py-2 text-xs font-bold rounded-lg text-center transition-colors;
+    @apply px-3 py-2 text-xs font-bold rounded-lg text-center transition-colors flex-1;
 }
 
 .puzzle-item .btn-small.btn-primary {
