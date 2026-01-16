@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" class="dark"> <!-- Default to dark mode -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OverType Style Guide (Themed)</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configure Tailwind to use CSS Variables for theming -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable manual toggling
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['"SF Mono"', 'SFMono-Regular', 'Menlo', 'Monaco', '"Cascadia Code"', 'Consolas', '"Roboto Mono"', 'monospace'],
+                    },
+                    colors: {
+                        theme: {
+                            // Map Tailwind colors to CSS variables defined in <style>
+                            bg: 'var(--bg-color)',
+                            text: 'var(--text-color)',
+                            surface: 'var(--surface-color)',
+                            surfaceHeader: 'var(--surface-header)',
+                            border: 'var(--border-color)',
+                            accent: 'var(--accent-color)',
+                            accentText: 'var(--accent-text)',
+                            
+                            // For elements that flip contrast (Buttons)
+                            inverseBg: 'var(--inverse-bg)',
+                            inverseText: 'var(--inverse-text)',
+                            
+                            success: '#00ff00', // Keep consistent or adjust if needed
+                            error: '#ff0000',
+                        }
+                    },
+                    fontSize: {
+                        base: ['14px', '1.6'],
+                    },
+                    maxWidth: {
+                        container: '900px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* THEME DEFINITIONS using CSS Variables */
+        :root {
+            /* Light Mode (Default variables if .dark is not present) */
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --surface-color: #f4f4f5;
+            --surface-header: #e4e4e7;
+            --border-color: #d4d4d8;
+            --accent-color: #4251de;
+            --accent-text: #ffffff;
+            
+            /* High Contrast "Inverse" items (Buttons) */
+            --inverse-bg: #000000;
+            --inverse-text: #ffffff;
+
+            /* Scrollbar colors */
+            --scroll-track: #ffffff;
+            --scroll-thumb: #d4d4d8;
+            --scroll-hover: #a1a1aa;
+        }
+
+        /* Dark Mode Overrides */
+        .dark {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --surface-color: #0a0a0a;
+            --surface-header: #111111;
+            --border-color: #333333;
+            --accent-color: #4251de;
+            --accent-text: #ffffff;
+            
+            /* High Contrast "Inverse" items */
+            --inverse-bg: #ffffff;
+            --inverse-text: #000000;
+
+            /* Scrollbar colors */
+            --scroll-track: #000000;
+            --scroll-thumb: #333333;
+            --scroll-hover: #555555;
+        }
+
+        /* Global Reset / Base Styles */
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s; /* Smooth theme transition */
+            font-feature-settings: "liga" 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Link Hover Effect */
+        .retro-link {
+            text-decoration: underline;
+            transition: all 0.2s;
+        }
+        .retro-link:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+            text-decoration: none;
+        }
+
+        /* Custom Scrollbar that adapts to theme */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scroll-track); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scroll-thumb); 
+            border: 1px solid var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scroll-hover); 
+        }
+
+        /* Utility helper for transitions on all themeable properties */
+        .theme-transition, .theme-transition * {
+            transition-property: background-color, border-color, color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 200ms;
+        }
+    </style>
+</head>
+<body class="font-mono text-base selection:bg-theme-inverseBg selection:text-theme-inverseText theme-transition">
+
+    <!-- Navbar -->
+    <nav class="border-b border-theme-border sticky top-0 bg-theme-bg/90 backdrop-blur-sm z-50">
+        <div class="max-w-container mx-auto px-5 py-4 flex justify-between items-center">
+            <div class="font-bold tracking-widest text-sm uppercase">Style Guide</div>
+            
+            <div class="flex items-center gap-6">
+                <div class="hidden md:flex gap-6 text-xs opacity-70">
+                    <a href="#" class="retro-link">COMPONENTS</a>
+                    <a href="#" class="retro-link">TYPOGRAPHY</a>
+                    <a href="#" class="retro-link">GITHUB</a>
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()" class="p-2 border border-theme-border hover:bg-theme-surface rounded-full transition-colors group" aria-label="Toggle Theme">
+                    <!-- Sun Icon (Show in Dark Mode) -->
+                    <svg class="w-4 h-4 hidden dark:block text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <!-- Moon Icon (Show in Light Mode) -->
+                    <svg class="w-4 h-4 block dark:hidden text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-container mx-auto px-5 py-12">
+
+        <!-- Hero Section -->
+        <header class="text-center py-16 border-b border-theme-border">
+            <div class="text-[10px] text-theme-accent font-bold tracking-[0.2em] mb-4">INTERNAL DESIGN SYSTEM</div>
+            <h1 class="text-2xl md:text-3xl font-normal uppercase mb-6 tracking-wide">
+                The Markdown Editor<br>Aesthetic
+            </h1>
+            <p class="max-w-2xl mx-auto opacity-70 mb-8">
+                A showcase of the monochromatic, terminal-inspired design language. Plain text simplicity, brutalist beauty, zero complexity. Now with automatic contrast switching.
+            </p>
+            <div class="flex justify-center gap-4 text-xs opacity-60 uppercase tracking-wider">
+                <span>Mono Stack</span> • <span>Auto Contrast</span> • <span>Utility First</span>
+            </div>
+        </header>
+
+        <!-- Section: Colors -->
+        <section class="py-16">
+            <h2 class="text-center text-sm border-b border-theme-border pb-3 mb-12 uppercase tracking-wide">01. Dynamic Palette</h2>
+            
+            <p class="text-center text-xs opacity-60 mb-8">Try the toggle in the top right. These values update dynamically.</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Color Cards -->
+                <div class="group">
+                    <div class="h-24 bg-theme-bg border border-theme-border mb-2 shadow-sm"></div>
+                    <div class="text-xs font-bold">Background</div>
+                    <div class="text-[10px] opacity-60 uppercase">var(--bg-color)</div>
+                </div>
+                <div class="group">
+                    <div class="h-24 bg-theme-surface border border-theme-border mb-2 shadow-sm"></div>
+                    <div class="text-xs font-bold">Surface</div>
+                    <div class="text-[10px] opacity-60 uppercase">var(--surface-color)</div>
+                </div>
+                <div class="group">
+                    <div class="h-24 bg-theme-surfaceHeader border border-theme-border mb-2 shadow-sm"></div>
+                    <div class="text-xs font-bold">Header</div>
+                    <div class="text-[10px] opacity-60 uppercase">var(--surface-header)</div>
+                </div>
+                <div class="group">
+                    <div class="h-24 bg-theme-border border border-theme-border mb-2 shadow-sm"></div>
+                    <div class="text-xs font-bold">Border</div>
+                    <div class="text-[10px] opacity-60 uppercase">var(--border-color)</div>
+                </div>
+                <div class="group">
+                    <div class="h-24 bg-theme-text border border-theme-border mb-2 shadow-sm"></div>
+                    <div class="text-xs font-bold">Text Main</div>
+                    <div class="text-[10px] opacity-60 uppercase">var(--text-color)</div>
+                </div>
+                <div class="group">
+                    <div class="h-24 bg-theme-accent border border-theme-border mb-2 shadow-sm"></div>
+                    <div class="text-xs font-bold text-theme-accent">Accent Blue</div>
+                    <div class="text-[10px] opacity-60 uppercase">#4251DE</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Typography -->
+        <section class="py-16">
+            <h2 class="text-center text-sm border-b border-theme-border pb-3 mb-12 uppercase tracking-wide">02. Typography</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-8">
+                    <div>
+                        <div class="text-[10px] opacity-50 mb-2">HEADING 1</div>
+                        <h1 class="text-3xl">THE QUICK BROWN FOX</h1>
+                    </div>
+                    <div>
+                        <div class="text-[10px] opacity-50 mb-2">HEADING 2</div>
+                        <h2 class="text-xl border-b border-theme-border pb-2 inline-block w-full">JUMPS OVER THE DOG</h2>
+                    </div>
+                    <div>
+                        <div class="text-[10px] opacity-50 mb-2">HEADING 3</div>
+                        <h3 class="text-lg">Pack my box with five dozen liquor jugs</h3>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <div class="text-[10px] opacity-50 mb-2">BODY TEXT</div>
+                        <p class="opacity-80 leading-relaxed">
+                            OverType is a transparent textarea over rendered markdown. <a href="#" class="retro-link">This is an inline link</a>. The font stack prefers system monospace fonts to keep things native and fast. 
+                        </p>
+                    </div>
+                    
+                    <div class="border-l-2 border-theme-border pl-5 py-1 italic opacity-80">
+                        "Simple request: Edit markdown. Reality: Install 50+ dependencies. This is a blockquote style."
+                    </div>
+
+                    <div>
+                        <div class="text-[10px] opacity-50 mb-2">LIST STYLES</div>
+                        <ul class="list-disc pl-5 space-y-2 opacity-90 marker:text-theme-border">
+                            <li><strong class="text-theme-text">Single Layer</strong> - A textarea over a preview div</li>
+                            <li><strong class="text-theme-text">Open Box</strong> - Read, understand, and modify</li>
+                            <li><strong class="text-theme-text">Zero Magic</strong> - No virtual DOM</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Components -->
+        <section class="py-16">
+            <h2 class="text-center text-sm border-b border-theme-border pb-3 mb-12 uppercase tracking-wide">03. UI Components</h2>
+
+            <!-- Buttons -->
+            <div class="mb-16">
+                <h3 class="text-xs mb-6 opacity-60">BUTTONS & INTERACTIONS</h3>
+                <div class="flex flex-wrap gap-6 items-center">
+                    <!-- Primary: Uses Inverse Colors (White btn in Dark mode, Black btn in Light mode) -->
+                    <button class="px-8 py-3 bg-theme-inverseBg text-theme-inverseText border border-theme-inverseBg hover:bg-transparent hover:text-theme-text hover:border-theme-text transition-all duration-200">
+                        PRIMARY ACTION
+                    </button>
+
+                    <!-- Secondary: Outline -->
+                    <button class="px-8 py-3 bg-transparent text-theme-text border border-theme-text hover:bg-theme-inverseBg hover:text-theme-inverseText hover:border-theme-inverseBg transition-all duration-200">
+                        SECONDARY ACTION
+                    </button>
+
+                    <!-- Accent -->
+                    <button class="px-6 py-2 bg-theme-accent text-theme-accentText text-xs font-bold tracking-widest hover:brightness-110 transition-all shadow-sm">
+                        ACCENT STYLE
+                    </button>
+
+                    <!-- Link style -->
+                    <a href="#" class="text-xs opacity-70 hover:opacity-100 transition-opacity">
+                        View on GitHub →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cards / Panels -->
+            <div class="mb-16">
+                <h3 class="text-xs mb-6 opacity-60">PANELS & WINDOWS</h3>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Standard Editor Panel -->
+                    <div class="border border-theme-border bg-theme-surface shadow-sm">
+                        <div class="px-4 py-3 border-b border-theme-border bg-theme-surfaceHeader text-xs flex justify-between items-center">
+                            <span class="font-bold">MAIN_EDITOR.MD</span>
+                            <span class="w-2 h-2 rounded-full bg-theme-success"></span>
+                        </div>
+                        <div class="p-4 h-48 font-mono text-sm overflow-hidden relative">
+                            <span class="opacity-30 absolute left-2 top-4 select-none flex flex-col items-end gap-1 text-xs">
+                                <span>1</span><span>2</span><span>3</span>
+                            </span>
+                            <div class="pl-8">
+                                <span class="text-blue-500 font-bold"># Welcome</span><br>
+                                This is <span class="bg-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-200 text-black px-1">**bold**</span> content.<br>
+                                <span class="opacity-50">| Cursor is here</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Table Panel -->
+                    <div class="border border-theme-border bg-theme-bg">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="bg-theme-surfaceHeader border-b border-theme-border">
+                                    <th class="p-3 font-normal text-xs opacity-70">FEATURE</th>
+                                    <th class="p-3 font-normal text-xs opacity-70 border-l border-theme-border">STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-theme-border">
+                                <tr>
+                                    <td class="p-3">Bundle Size</td>
+                                    <td class="p-3 border-l border-theme-border text-theme-success font-bold">91KB</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3">Dependencies</td>
+                                    <td class="p-3 border-l border-theme-border opacity-70">Zero</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3">Complexity</td>
+                                    <td class="p-3 border-l border-theme-border opacity-70">Low</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Blocks -->
+            <div class="mb-16">
+                <h3 class="text-xs mb-6 opacity-60">CODE BLOCKS</h3>
+                <div class="bg-theme-surfaceHeader border border-theme-border p-5 overflow-x-auto shadow-inner">
+<pre class="text-sm"><span class="opacity-50">// The entire trick:</span>
+<span class="text-theme-accent font-bold">layerElements</span>(textarea, preview)           <span class="opacity-50">// Position textarea</span>
+<span class="text-theme-accent font-bold">applySpacing</span>(textarea, preview)            <span class="opacity-50">// Match fonts</span>
+
+<span class="text-purple-600 dark:text-purple-400">textarea</span>.style.color = <span class="text-green-600 dark:text-green-400">'transparent'</span>
+<span class="text-purple-600 dark:text-purple-400">textarea</span>.style.caretColor = <span class="text-green-600 dark:text-green-400">'black'</span></pre>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Call to Action -->
+        <section class="py-20 text-center border-t border-theme-border">
+            <h2 class="text-lg mb-8 uppercase tracking-widest">Start Building</h2>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#" class="px-8 py-3 bg-theme-inverseBg text-theme-inverseText border border-theme-inverseBg hover:bg-transparent hover:text-theme-text hover:border-theme-text transition-colors duration-200 decoration-0">
+                    DOWNLOAD LIBRARY
+                </a>
+                <a href="#" class="px-8 py-3 bg-transparent text-theme-text border border-theme-text hover:bg-theme-inverseBg hover:text-theme-inverseText hover:border-theme-inverseBg transition-colors duration-200 decoration-0">
+                    READ DOCUMENTATION
+                </a>
+            </div>
+            <div class="mt-10 italic opacity-60">"Wonderfully boring."</div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-theme-border py-12 text-center text-sm opacity-90 bg-theme-surface/30">
+        <nav class="mb-8 flex justify-center gap-8 text-xs tracking-wider">
+            <a href="#" class="retro-link">GITHUB</a>
+            <a href="#" class="retro-link">NPM</a>
+            <a href="#" class="retro-link">EXAMPLES</a>
+        </nav>
+        <p class="mb-6 opacity-60">Built with the radical idea that sometimes dumb ideas work</p>
+        <div class="mb-6 opacity-40">------------------------------</div>
+        <p class="text-xs opacity-50">
+            Local Style Guide Preview
+        </p>
+    </footer>
+
+    <!-- Theme Logic -->
+    <script>
+        // Check for saved theme preference, otherwise use system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Toggle Function
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+    </script>
+</body>
+</html>
