@@ -11,10 +11,15 @@ function ReplayControls({ grid, setGrid, modelHelpers }) {
     const endTime = grid.get('endTime');
     const solved = grid.get('solved');
     
-    const elapsedTime = endTime - startTime;
-    const elapsedSeconds = Math.floor(elapsedTime / 1000);
-    const minutes = Math.floor(elapsedSeconds / 60);
-    const seconds = elapsedSeconds % 60;
+    const currentSnapshotTime = grid.get('currentSnapshotTime') || 0;
+    const totalTime = endTime - startTime;
+    
+    const formatTime = (ms) => {
+        const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
     
     const stepForward = useCallback(() => {
         setGrid(g => modelHelpers.replayStepForward(g));
@@ -78,7 +83,7 @@ function ReplayControls({ grid, setGrid, modelHelpers }) {
                     </span>
                     <span className={`replay-status ${statusClass}`}>{statusText}</span>
                     <span className="replay-time">
-                        {minutes}m {seconds}s
+                        {formatTime(currentSnapshotTime)} / {formatTime(totalTime)}
                     </span>
                 </div>
                 <a href="/" className="replay-btn-home">

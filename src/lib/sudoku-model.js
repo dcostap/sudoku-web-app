@@ -120,6 +120,7 @@ export function newSudokuModel({initialDigits, difficultyLevel, onPuzzleStateCha
         undoList: List(),
         redoList: List(),
         currentSnapshot: '',
+        currentSnapshotTime: 0,
         onPuzzleStateChange: onPuzzleStateChange,
         cells: List(),
         showPencilmarks: true,
@@ -156,6 +157,72 @@ export const modelHelpers = {
         [SETTINGS.autoSave]: true,
         [SETTINGS.shortenLinks]: true,
         [SETTINGS.passProgressToSolver]: false,
+    },
+
+    getSnapshotValue: (entry) => {
+        return (typeof entry === 'string') ? entry : entry.s;
+    },
+    
+    getSnapshotTime: (entry) => {
+        return (typeof entry === 'string') ? 0 : entry.t;
+    },
+
+    getCurrentTimeOffset: (grid) => {
+        const intervalStartTime = grid.get('intervalStartTime');
+        if (!intervalStartTime) return 0;
+        const pausedAt = grid.get('pausedAt');
+        const now = pausedAt || Date.now();
+        return now - intervalStartTime;
+    },
+
+    buildReplayHistory: (historyEntry) => {
+        const undoList = historyEntry.undoList || [];
+        const currentSnapshot = historyEntry.currentSnapshot || '';
+        const currentSnapshotTime = historyEntry.currentSnapshotTime || historyEntry.elapsedTime || 0;
+        
+        const fullHistory = [];
+        const GAP_THRESHOLD = 30000; // 1 minute in milliseconds
+        
+        // Add all snapshots from undoList
+        undoList.forEach((entry) => {
+            const snapshot = modelHelpers.getSnapshotValue(entry);
+            const time = modelHelpers.getSnapshotTime(entry);
+            
+            // Check if there's a gap between previous and this one
+            if (fullHistory.length > 0) {
+                const prevEntry = fullHistory[fullHistory.length - 1];
+                const prevSnapshot = modelHelpers.getSnapshotValue(prevEntry);
+                const prevTime = modelHelpers.getSnapshotTime(prevEntry);
+                
+                if (time > prevTime + GAP_THRESHOLD) {
+                    let gapTime = prevTime + GAP_THRESHOLD;
+                    while (gapTime < time) {
+                        fullHistory.push({ s: prevSnapshot, t: gapTime, isBlank: true });
+                        gapTime += GAP_THRESHOLD;
+                    }
+                }
+            }
+            
+            fullHistory.push({ s: snapshot, t: time });
+        });
+        
+        // Add the final snapshot
+        if (fullHistory.length > 0) {
+            const prevEntry = fullHistory[fullHistory.length - 1];
+            const prevSnapshot = modelHelpers.getSnapshotValue(prevEntry);
+            const prevTime = modelHelpers.getSnapshotTime(prevEntry);
+            
+            if (currentSnapshotTime > prevTime + GAP_THRESHOLD) {
+                let gapTime = prevTime + GAP_THRESHOLD;
+                while (gapTime < currentSnapshotTime) {
+                    fullHistory.push({ s: prevSnapshot, t: gapTime, isBlank: true });
+                    gapTime += GAP_THRESHOLD;
+                }
+            }
+        }
+        fullHistory.push({ s: currentSnapshot, t: currentSnapshotTime });
+        
+        return List(fullHistory);
     },
 
     loadSettings: () => {
@@ -566,6 +633,7 @@ export const modelHelpers = {
             status: status, // 'solved' or 'abandoned'
             undoList: grid.get('undoList').toArray(),
             currentSnapshot: grid.get('currentSnapshot'),
+            currentSnapshotTime: grid.get('currentSnapshotTime') || 0,
             hintsUsed: grid.get('hintsUsed').toArray(),
             archivedAt: Date.now(),
         };
@@ -672,6 +740,7 @@ export const modelHelpers = {
     },
 
     createReplayGrid: (historyEntry) => {
+        const replayHistory = modelHelpers.buildReplayHistory(historyEntry);
         const grid = Map({
             mode: 'replay',
             solved: historyEntry.status === 'solved',
@@ -688,7 +757,8 @@ export const modelHelpers = {
             undoList: List(historyEntry.undoList),
             redoList: List(),
             currentSnapshot: '',
-            replayHistory: List(historyEntry.undoList),
+            currentSnapshotTime: 0,
+            replayHistory: replayHistory,
             replayStep: 0,
             cells: List(),
             showPencilmarks: true,
@@ -714,8 +784,12 @@ export const modelHelpers = {
             return grid; // At the end
         }
         
-        const snapshot = replayHistory.get(currentStep);
+        const entry = replayHistory.get(currentStep);
+        const snapshot = modelHelpers.getSnapshotValue(entry);
+        const time = modelHelpers.getSnapshotTime(entry);
+        
         grid = grid.set('replayStep', currentStep + 1);
+        grid = grid.set('currentSnapshotTime', time);
         grid = modelHelpers.restoreSnapshot(grid, snapshot);
         grid = modelHelpers.checkCompletedDigits(grid);
         
@@ -736,9 +810,12 @@ export const modelHelpers = {
             // Go back to initial state
             const initialDigits = grid.get('initialDigits');
             const cells = Range(0, 81).toList().map(i => newCell(i, initialDigits[i]));
-            grid = grid.set('cells', cells).set('currentSnapshot', '');
+            grid = grid.set('cells', cells).set('currentSnapshot', '').set('currentSnapshotTime', 0);
         } else {
-            const snapshot = replayHistory.get(currentStep - 2);
+            const entry = replayHistory.get(currentStep - 2);
+            const snapshot = modelHelpers.getSnapshotValue(entry);
+            const time = modelHelpers.getSnapshotTime(entry);
+            grid = grid.set('currentSnapshotTime', time);
             grid = modelHelpers.restoreSnapshot(grid, snapshot);
         }
         
@@ -757,9 +834,12 @@ export const modelHelpers = {
             // Go to initial state
             const initialDigits = grid.get('initialDigits');
             const cells = Range(0, 81).toList().map(i => newCell(i, initialDigits[i]));
-            grid = grid.set('cells', cells).set('currentSnapshot', '');
+            grid = grid.set('cells', cells).set('currentSnapshot', '').set('currentSnapshotTime', 0);
         } else {
-            const snapshot = replayHistory.get(targetStep - 1);
+            const entry = replayHistory.get(targetStep - 1);
+            const snapshot = modelHelpers.getSnapshotValue(entry);
+            const time = modelHelpers.getSnapshotTime(entry);
+            grid = grid.set('currentSnapshotTime', time);
             grid = modelHelpers.restoreSnapshot(grid, snapshot);
         }
         
@@ -1001,9 +1081,12 @@ export const modelHelpers = {
     pushNewSnapshot: (grid, snapshotBefore) => {
         const snapshotAfter = modelHelpers.toSnapshotString(grid);
         if (snapshotBefore !== snapshotAfter) {
+            const timeBefore = grid.get('currentSnapshotTime') || 0;
+            const timeNow = modelHelpers.getCurrentTimeOffset(grid);
             grid = grid
-                .update('undoList', list => list.push(snapshotBefore))
-                .set('redoList', List());
+                .update('undoList', list => list.push({ s: snapshotBefore, t: timeBefore }))
+                .set('redoList', List())
+                .set('currentSnapshotTime', timeNow);
             grid = modelHelpers.setCurrentSnapshot(grid, snapshotAfter);
         }
         return grid;
@@ -1028,10 +1111,17 @@ export const modelHelpers = {
             if (actionsBlocked(grid) || undoList.size < 1) {
                 return grid;
             }
-            const beforeUndo = grid.get('currentSnapshot');
-            const snapshot = undoList.last();
+            const beforeUndo = {
+                s: grid.get('currentSnapshot'),
+                t: grid.get('currentSnapshotTime'),
+            };
+            const entry = undoList.last();
+            const snapshot = modelHelpers.getSnapshotValue(entry);
+            const time = modelHelpers.getSnapshotTime(entry);
+
             grid = modelHelpers.restoreSnapshot(grid, snapshot)
                 .set('undoList', undoList.pop())
+                .set('currentSnapshotTime', time)
                 .update('redoList', list => list.push(beforeUndo));
             grid = modelHelpers.checkCompletedDigits(grid);
             modelHelpers.notifyPuzzleStateChange(grid);
@@ -1045,10 +1135,17 @@ export const modelHelpers = {
             if (actionsBlocked(grid) || redoList.size < 1) {
                 return grid;
             }
-            const beforeRedo = grid.get('currentSnapshot');
-            const snapshot = redoList.last();
+            const beforeRedo = {
+                s: grid.get('currentSnapshot'),
+                t: grid.get('currentSnapshotTime'),
+            };
+            const entry = redoList.last();
+            const snapshot = modelHelpers.getSnapshotValue(entry);
+            const time = modelHelpers.getSnapshotTime(entry);
+
             grid = modelHelpers.restoreSnapshot(grid, snapshot)
                 .set('redoList', redoList.pop())
+                .set('currentSnapshotTime', time)
                 .update('undoList', list => list.push(beforeRedo));
             grid = modelHelpers.checkCompletedDigits(grid);
             modelHelpers.notifyPuzzleStateChange(grid);
@@ -1446,6 +1543,7 @@ export const modelHelpers = {
                 undoList: grid.get('undoList').toArray(),
                 redoList: grid.get('redoList').toArray(),
                 currentSnapshot: currentSnapshot,
+                currentSnapshotTime: grid.get('currentSnapshotTime') || 0,
                 hintsUsed: grid.get('hintsUsed').toArray(),
                 lastUpdatedTime: Date.now(),
             };
@@ -1526,6 +1624,7 @@ export const modelHelpers = {
             intervalStartTime: Date.now() - puzzleState.elapsedTime,
             undoList: List(puzzleState.undoList),
             redoList: List(puzzleState.redoList),
+            currentSnapshotTime: puzzleState.currentSnapshotTime || 0,
             hintsUsed: Set(puzzleState.hintsUsed || []),
             pausedAt: undefined,
             modalState: undefined,
