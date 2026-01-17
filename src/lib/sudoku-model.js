@@ -751,6 +751,36 @@ export const modelHelpers = {
         }
     },
 
+    serializeAllHistory: () => {
+        const allHistory = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('history-')) {
+                try {
+                    const items = JSON.parse(localStorage.getItem(key));
+                    if (Array.isArray(items)) {
+                        allHistory.push(...items);
+                    }
+                } catch (e) {}
+            }
+        }
+        
+        if (allHistory.length === 0) return null;
+        
+        try {
+            const json = JSON.stringify(allHistory);
+            const bytes = new TextEncoder().encode(json);
+            let binary = '';
+            for (let i = 0; i < bytes.byteLength; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);
+        } catch (e) {
+            console.error('Failed to serialize all history:', e);
+            return null;
+        }
+    },
+
     deserializeHistoryEntry: (str) => {
         try {
             const binary = atob(str);
@@ -1573,6 +1603,29 @@ export const modelHelpers = {
         }
         else if (action === 'paste-initial-digits') {
             return modelHelpers.retryInitialDigits(grid, args.digits);
+        }
+        else if (action === 'import-history') {
+            const { historyData } = args;
+            const entries = Array.isArray(historyData) ? historyData : [historyData];
+            let successCount = 0;
+            let existsCount = 0;
+            
+            entries.forEach(entry => {
+                const result = modelHelpers.addHistoryEntry(entry);
+                if (result.success) successCount++;
+                else if (result.exists) existsCount++;
+            });
+            
+            if (successCount > 0) {
+                alert(`Imported ${successCount} puzzle(s) successfully!`);
+            } else if (existsCount > 0) {
+                alert('All puzzle(s) already exist in your history.');
+            } else {
+                alert('No puzzles found in the data.');
+            }
+            
+            modelHelpers.redirectToHome();
+            return grid;
         }
         else if (action === 'save-settings') {
             return modelHelpers.applyNewSettings(grid, args.newSettings);

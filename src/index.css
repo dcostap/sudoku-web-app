@@ -176,12 +176,12 @@
 
     html {
         @apply m-0 w-full h-full;
-        font-size: 13px;
+        font-size: 12px;
     }
 
     @screen md {
         html {
-            font-size: 18px;
+            font-size: 17px;
         }
     }
 
