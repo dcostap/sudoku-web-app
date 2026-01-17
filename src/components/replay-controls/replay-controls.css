@@ -39,11 +39,46 @@
 }
 
 .replay-slider-container {
-    @apply flex-grow min-w-[150px];
+    @apply flex-grow min-w-[150px] relative;
 }
 
 .replay-slider {
-    @apply w-full h-2 bg-theme-surfaceHeader rounded-none appearance-none cursor-pointer my-1;
+    @apply w-full h-2 bg-theme-surfaceHeader rounded-none appearance-none cursor-pointer mt-1 mb-3;
+}
+
+.replay-indicators {
+    @apply absolute left-0 right-0 bottom-0.5 h-1 flex pointer-events-none;
+    padding: 0 8px; /* Offset for slider thumb radius approx */
+}
+
+.replay-indicator {
+    @apply absolute w-1 h-1 rounded-full opacity-60;
+    transform: translateX(-50%);
+}
+
+.indicator-setDigit {
+    @apply bg-blue-500;
+}
+
+.indicator-toggleInnerPencilMark,
+.indicator-toggleOuterPencilMark,
+.indicator-pencilMarksToInner {
+    @apply bg-gray-400;
+}
+
+.indicator-setCellColor {
+    @apply bg-yellow-500;
+}
+
+.indicator-clearCell,
+.indicator-clearCellColor,
+.indicator-clearPencilMarks {
+    @apply bg-red-400;
+}
+
+.indicator-hint,
+.indicator-showCandidates {
+    @apply bg-purple-500;
 }
 
 .replay-slider::-webkit-slider-thumb {

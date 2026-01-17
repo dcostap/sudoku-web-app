@@ -6,7 +6,8 @@ function ReplayControls({ grid, setGrid, modelHelpers }) {
     const [playbackSpeed, setPlaybackSpeed] = useState(1000); // ms per step
     
     const replayStep = grid.get('replayStep');
-    const totalSteps = grid.get('replayHistory').size;
+    const replayHistory = grid.get('replayHistory');
+    const totalSteps = replayHistory.size - 1;
     const startTime = grid.get('startTime');
     const endTime = grid.get('endTime');
     const solved = grid.get('solved');
@@ -54,9 +55,9 @@ function ReplayControls({ grid, setGrid, modelHelpers }) {
         const interval = setInterval(() => {
             setGrid(g => {
                 const currentStep = g.get('replayStep');
-                const maxSteps = g.get('replayHistory').size;
+                const history = g.get('replayHistory');
                 
-                if (currentStep >= maxSteps) {
+                if (currentStep >= history.size - 1) {
                     setIsPlaying(false);
                     return g;
                 }
@@ -158,6 +159,21 @@ function ReplayControls({ grid, setGrid, modelHelpers }) {
                         onTouchStart={() => setIsPlaying(false)}
                         className="replay-slider"
                     />
+                    <div className="replay-indicators">
+                        {replayHistory.map((step, index) => {
+                            const actionType = step.a;
+                            if (!actionType) return null;
+                            
+                            const position = (index / totalSteps) * 100;
+                            return (
+                                <div 
+                                    key={index} 
+                                    className={`replay-indicator indicator-${actionType}`}
+                                    style={{ left: `${position}%` }}
+                                />
+                            );
+                        }).toArray()}
+                    </div>
                 </div>
             </div>
         </div>

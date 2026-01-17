@@ -187,6 +187,7 @@ export const modelHelpers = {
         undoList.forEach((entry) => {
             const snapshot = modelHelpers.getSnapshotValue(entry);
             const time = modelHelpers.getSnapshotTime(entry);
+            const actionType = entry.a;
             
             // Check if there's a gap between previous and this one
             if (fullHistory.length > 0) {
@@ -203,7 +204,7 @@ export const modelHelpers = {
                 }
             }
             
-            fullHistory.push({ s: snapshot, t: time });
+            fullHistory.push({ s: snapshot, t: time, a: actionType });
         });
         
         // Add the final snapshot
@@ -1169,13 +1170,13 @@ export const modelHelpers = {
         return;
     },
 
-    pushNewSnapshot: (grid, snapshotBefore) => {
+    pushNewSnapshot: (grid, snapshotBefore, actionType) => {
         const snapshotAfter = modelHelpers.toSnapshotString(grid);
         if (snapshotBefore !== snapshotAfter) {
             const timeBefore = grid.get('currentSnapshotTime') || 0;
             const timeNow = modelHelpers.getCurrentTimeOffset(grid);
             grid = grid
-                .update('undoList', list => list.push({ s: snapshotBefore, t: timeBefore }))
+                .update('undoList', list => list.push({ s: snapshotBefore, t: timeBefore, a: actionType }))
                 .set('redoList', List())
                 .set('currentSnapshotTime', timeNow);
             grid = modelHelpers.setCurrentSnapshot(grid, snapshotAfter);
@@ -1836,7 +1837,7 @@ export const modelHelpers = {
             grid = modelHelpers.clearSelection(grid);
             const snapshotAfter = modelHelpers.toSnapshotString(grid);
             if (snapshotBefore !== snapshotAfter) {
-                grid = modelHelpers.pushNewSnapshot(grid, snapshotBefore);
+                grid = modelHelpers.pushNewSnapshot(grid, snapshotBefore, 'hint');
             }
         }
         return grid;
@@ -1851,14 +1852,14 @@ export const modelHelpers = {
         return modelHelpers.saveSettings(grid, newSettings);
     },
 
-    trackSnapshotsForUndo: (grid, f) => {
+    trackSnapshotsForUndo: (grid, actionType, f) => {
         const snapshotBefore = grid.get('currentSnapshot');
         grid = f(grid);
-        return modelHelpers.pushNewSnapshot(grid, snapshotBefore);
+        return modelHelpers.pushNewSnapshot(grid, snapshotBefore, actionType);
     },
 
     applyClearColorHighlights: (grid) => {
-        return modelHelpers.trackSnapshotsForUndo(grid, grid => {
+        return modelHelpers.trackSnapshotsForUndo(grid, 'clearCellColor', grid => {
             const cells = grid.get('cells').map(c => {
                 if (c.get('colorCode') !== '1') {
                     c = modelHelpers.updateCellSnapshotCache( c.set('colorCode', '1') );
@@ -2015,7 +2016,7 @@ export const modelHelpers = {
         else if (opName === 'clearCell') {
             grid = grid.set('matchDigit', '0');
         }
-        return modelHelpers.pushNewSnapshot(grid, snapshotBefore);
+        return modelHelpers.pushNewSnapshot(grid, snapshotBefore, opName);
     },
 
     setDigitAsCellOp: (c, newDigit) => {
@@ -2146,7 +2147,7 @@ export const modelHelpers = {
     },
 
     clearPencilmarks: (grid) => {
-        return modelHelpers.trackSnapshotsForUndo(grid, grid => {
+        return modelHelpers.trackSnapshotsForUndo(grid, 'clearPencilMarks', grid => {
             const cells = grid.get('cells');
             const clearSnapshot = cells.filter(c => !c.get('isGiven') && c.get('digit') !== '0')
                 .map(c => {
@@ -2172,7 +2173,7 @@ export const modelHelpers = {
         });
         grid = grid.set('cells', cells);
         grid = modelHelpers.applySelectionOp(grid, 'clearSelection');
-        return modelHelpers.pushNewSnapshot(grid, snapshotBefore);
+        return modelHelpers.pushNewSnapshot(grid, snapshotBefore, 'showCandidates');
     },
 
     setGridSolved: (grid) => {
