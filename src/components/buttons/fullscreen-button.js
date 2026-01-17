@@ -31,7 +31,7 @@ function FullscreenButton () {
                 type="button" 
                 title={title} 
                 onClick={clickHandler}
-                className="w-11 h-11 flex items-center justify-center rounded-lg bg-white/50 hover:bg-white/80 backdrop-blur-sm border border-gray-200/50 hover:border-primary-300 transition-all duration-200 hover:shadow-md active:scale-95"
+                className="icon-button active:scale-95"
             >
                 {fsEnabled ? <ButtonIcon name="exit-fullscreen" /> : <ButtonIcon name="enter-fullscreen" />}
             </button>

@@ -1,104 +1,91 @@
 .home-page {
-    @apply h-full flex flex-col overflow-hidden;
-    background: #f8fafc;
-    color: #1e293b;
-}
-
-.home-page-header {
-    @apply py-6 px-6 text-center border-b border-gray-200 bg-white;
-}
-
-.header-content h1 {
-    @apply text-4xl font-black text-gray-900 tracking-tight mb-2 uppercase;
-}
-
-.header-content .tagline {
-    @apply text-gray-500 font-medium text-lg;
+    @apply h-full flex flex-col overflow-hidden bg-theme-bg text-theme-text;
 }
 
 .home-page-content {
-    @apply flex-1 max-w-5xl w-full mx-auto px-6 pt-10 pb-0 flex flex-col overflow-hidden;
+    @apply flex-1 max-w-6xl w-full mx-auto px-5 py-10 flex flex-col overflow-hidden;
+}
+
+.home-hero {
+    @apply text-center border-b border-theme-border pb-10 mb-10;
+}
+
+.home-hero-eyebrow {
+    @apply text-[10px] text-theme-accent font-bold tracking-[0.2em] mb-3;
+}
+
+.home-hero h1 {
+    @apply text-2xl md:text-3xl uppercase tracking-wide mb-4;
+}
+
+.home-hero p {
+    @apply text-xs opacity-70;
 }
 
 /* Action Grid */
 .action-grid {
-    @apply grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12;
 }
 
 .action-btn {
-    @apply flex items-center gap-4 p-4 rounded-xl transition-all duration-200 text-left border-2;
-    background: white;
+    @apply flex items-center gap-4 p-4 text-left border border-theme-border bg-theme-surface hover:bg-theme-surfaceHeader transition-colors;
 }
 
 .action-btn.primary {
-    @apply border-primary-500 bg-primary-50;
+    @apply border-theme-text;
 }
 
 .action-btn.secondary {
-    @apply border-gray-100 hover:border-gray-200 hover:bg-gray-50;
+    @apply border-theme-border;
 }
 
 .action-btn .icon {
-    @apply w-12 h-12 flex items-center justify-center rounded-lg bg-white shadow-sm;
-}
-
-.action-btn.primary .icon {
-    @apply text-primary-600;
-}
-
-.action-btn.secondary .icon {
-    @apply text-gray-400;
+    @apply w-10 h-10 flex items-center justify-center border border-theme-border bg-theme-bg;
 }
 
 .action-btn .icon svg {
-    @apply w-6 h-6;
+    @apply w-5 h-5;
 }
 
 .action-btn h3 {
-    @apply text-base font-bold text-gray-900 m-0;
+    @apply text-xs uppercase tracking-widest m-0;
 }
 
 .action-btn p {
-    @apply text-xs text-gray-500 m-0;
+    @apply text-[10px] opacity-60 m-0;
 }
 
 /* Tabs */
 .puzzles-explorer {
-    @apply flex-1 flex flex-col min-h-0 mt-8;
+    @apply flex-1 flex flex-col min-h-0 mt-6;
 }
 
 .tabs {
-    @apply flex gap-1 border-b border-gray-200;
+    @apply flex flex-wrap gap-4 border-b border-theme-border text-xs uppercase tracking-widest;
+}
+
+.tab-item {
+    @apply px-1 py-3 opacity-60 hover:opacity-100 transition-opacity border-b-2 border-transparent;
+    background: transparent;
+}
+
+.tab-item.active {
+    @apply opacity-100 border-theme-text;
+}
+
+.tab-item .count {
+    @apply ml-2 px-1.5 py-0.5 text-[10px] border border-theme-border uppercase tracking-widest;
 }
 
 .tab-panels {
     @apply flex-1 overflow-y-auto touch-pan-y min-h-0;
 }
 
-.tab-item {
-    @apply px-5 py-3 text-sm font-bold text-gray-500 transition-all duration-200 border-b-2 border-transparent relative hover:text-gray-900;
-    background: transparent;
-}
-
-.tab-item.active {
-    @apply text-primary-600 border-primary-600;
-}
-
-.tab-item .count {
-    @apply ml-2 px-1.5 py-0.5 text-[10px] rounded bg-gray-100 text-gray-500 font-bold;
-}
-
-.tab-item.active .count {
-    @apply bg-primary-100 text-primary-600;
+.panel {
+    @apply border border-theme-border bg-theme-surface p-4;
 }
 
 /* Puzzle Lists & Items */
-.saved-puzzles-list,
-.history-puzzles-list {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
-}
-
-/* Puzzle List layouts */
 .saved-puzzles-list,
 .history-puzzles-list {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
@@ -109,11 +96,11 @@
 }
 
 .nyt-month-section {
-    @apply border border-gray-200 bg-white overflow-hidden;
+    @apply border border-theme-border bg-theme-bg overflow-hidden;
 }
 
 .nyt-month-section h2 {
-    @apply flex items-center gap-3 px-4 py-3 m-0 text-sm font-bold text-gray-700 cursor-pointer select-none hover:bg-gray-50 transition-colors;
+    @apply flex items-center gap-3 px-4 py-3 m-0 text-xs uppercase tracking-widest cursor-pointer select-none hover:bg-theme-surfaceHeader transition-colors;
 }
 
 .nyt-month-section h2 .month-name {
@@ -121,19 +108,19 @@
 }
 
 .nyt-month-section h2 .puzzle-count {
-    @apply text-[10px] text-gray-400 font-medium bg-gray-50 px-2 py-1 rounded;
+    @apply text-[10px] opacity-60 border border-theme-border px-2 py-0.5;
 }
 
 .nyt-month-section h2 .chevron {
-    @apply text-gray-400 w-4 text-center;
+    @apply opacity-60 w-4 text-center;
 }
 
 .nyt-month-section ul {
-    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 p-4 gap-4 border-t border-gray-100 list-none m-0;
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 p-4 gap-4 border-t border-theme-border list-none m-0;
 }
 
 .puzzles-empty, .nyt-puzzles-empty {
-    @apply py-20 text-center text-gray-400 text-sm italic;
+    @apply py-16 text-center text-xs uppercase tracking-widest opacity-50;
 }
 
 @media (max-width: 640px) {

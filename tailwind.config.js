@@ -8,6 +8,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        theme: {
+          bg: 'var(--bg-color)',
+          text: 'var(--text-color)',
+          surface: 'var(--surface-color)',
+          surfaceHeader: 'var(--surface-header)',
+          border: 'var(--border-color)',
+          accent: 'var(--accent-color)',
+          accentText: 'var(--accent-text)',
+          inverseBg: 'var(--inverse-bg)',
+          inverseText: 'var(--inverse-text)',
+          success: '#00ff00',
+          error: '#ff0000',
+        },
         primary: {
           50: '#f0f9ff',
           100: '#e0f2fe',

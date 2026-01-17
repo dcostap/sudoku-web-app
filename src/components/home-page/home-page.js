@@ -208,6 +208,11 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
     return (
         <div className="home-page">
             <main className="home-page-content">
+                <header className="home-hero">
+                    <div className="home-hero-eyebrow">LOCAL SUDOKU STUDIO</div>
+                    <h1>Play. Review. Archive.</h1>
+                    <p>Monochrome, minimal, and focused on the grid.</p>
+                </header>
                 <section className="action-section">
                     <div className="action-grid">
                         <button className="action-btn primary" onClick={onNewPuzzle}>

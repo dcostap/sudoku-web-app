@@ -1,38 +1,19 @@
-#timer {
-    display: flex;
-}
+@tailwind components;
 
-.elapsed-time {
-    min-width: 2.8em;
-    margin: 2vh 0 0 1.2vh;
-    text-align: right;
-}
+@layer components {
+    .timer-block {
+        @apply flex items-center gap-2 px-3 py-1 border border-theme-border bg-theme-surface text-theme-text;
+    }
 
-.hints-used {
-    margin: 2vh 0 0 0.3em;
-}
+    .timer-elapsed {
+        @apply text-xs uppercase tracking-widest;
+    }
 
-.elapsed-time,
-.hints-used {
-    display: inline-block;
-    opacity: 0.6;
-    line-height: 1;
-}
+    .timer-hints {
+        @apply inline-flex items-center justify-center min-w-[1.5rem] h-5 px-1 text-[10px] font-bold border border-theme-border bg-theme-surfaceHeader;
+    }
 
-.hints-used::before {
-    content: "/";
-    margin-right: 0.2em
-}
-
-#pause-btn {
-    margin-left: 0.2vh;
-}
-
-.solved .elapsed-time {
-    color: var(--solved-text-color);
-    font-weight: bold;
-}
-
-.solved #pause-btn {
-    display: none;
+    .timer-button {
+        @apply w-8 h-8 rounded-full;
+    }
 }

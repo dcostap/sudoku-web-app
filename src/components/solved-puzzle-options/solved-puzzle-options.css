@@ -1,8 +1,6 @@
 
 .solved-puzzle-options {
-    background-color: var(--vkbd-mode-panel-fill-color);
-    border-radius: 0.55em;
-    padding: 0.65em;
+    @apply border border-theme-border bg-theme-surface p-4;
 }
 
 .landscape .solved-puzzle-options {
@@ -18,23 +16,14 @@
 }
 
 .solved-puzzle-options p {
-    text-align: center;
+    @apply text-center text-xs uppercase tracking-widest;
     margin: 0;
 }
 
 .solved-puzzle-options button,
 .solved-puzzle-options a.btn {
-    display: block;
-    box-sizing: border-box;
-    width: 11em;
+    @apply block box-border w-48 text-center text-xs uppercase tracking-widest border border-theme-border bg-theme-inverseBg text-theme-inverseText hover:bg-transparent hover:text-theme-text;
     text-decoration: none;
-    text-align: center;
     font-family: inherit;
-    font-size: inherit;
-    font-weight: bold;
     padding: 0.4em 0;
-    color: var(--button-text-color);
-    background-color: var(--button-bg-color);
-    border-radius: 0.25em;
-    border: none;
 }

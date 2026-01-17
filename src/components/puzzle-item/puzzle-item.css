@@ -1,10 +1,10 @@
 /* PuzzleItem common styles */
 .puzzle-item {
-    @apply bg-white border border-gray-200 rounded-2xl overflow-hidden transition-all duration-200;
+    @apply bg-theme-surface border border-theme-border overflow-hidden transition-colors;
 }
 
 .puzzle-item:hover {
-    @apply border-primary-300 shadow-md transform scale-[1.01];
+    @apply border-theme-text;
 }
 
 .puzzle-item a {
@@ -24,24 +24,24 @@
 }
 
 .puzzle-date {
-    @apply text-[11px] font-bold text-gray-900 block truncate;
+    @apply text-[10px] uppercase tracking-widest block truncate;
 }
 
 .difficulty-badge {
-    @apply text-[9px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded-sm self-start;
+    @apply text-[10px] uppercase tracking-widest px-1.5 py-0.5 border border-theme-border bg-theme-bg self-start;
 }
 
 .puzzle-item.nyt .difficulty-badge {
     @apply self-center;
 }
 
-.difficulty-badge.easy { @apply bg-emerald-100 text-emerald-700; }
-.difficulty-badge.medium { @apply bg-amber-100 text-amber-700; }
-.difficulty-badge.hard { @apply bg-rose-100 text-rose-700; }
-.difficulty-badge.expert { @apply bg-slate-800 text-white; }
+.difficulty-badge.easy { @apply text-theme-text; }
+.difficulty-badge.medium { @apply text-theme-text; }
+.difficulty-badge.hard { @apply text-theme-text; }
+.difficulty-badge.expert { @apply text-theme-text; }
 
 .puzzle-time {
-    @apply text-sm font-medium text-gray-900;
+    @apply text-xs uppercase tracking-widest;
 }
 
 .puzzle-item.nyt .puzzle-time {
@@ -49,33 +49,33 @@
 }
 
 .nyt-tag {
-    @apply mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-100 self-start;
+    @apply mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 border border-theme-border text-[10px] uppercase tracking-widest self-start;
 }
 
 .nyt-icon {
-    @apply bg-blue-600 text-white px-1 rounded-sm text-[8px];
+    @apply bg-theme-accent text-theme-accentText px-1 text-[8px];
 }
 
 .status-badge {
-    @apply inline-flex items-center self-start px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full mb-1;
+    @apply inline-flex items-center self-start px-2 py-0.5 text-[10px] uppercase tracking-wider border border-theme-border mb-1;
 }
 
-.status-badge.solved { @apply bg-green-100 text-green-700; }
-.status-badge.abandoned { @apply bg-gray-100 text-gray-600; }
-.status-badge.draft { @apply bg-blue-100 text-blue-700; }
+.status-badge.solved { @apply text-theme-text; }
+.status-badge.abandoned { @apply text-theme-text opacity-60; }
+.status-badge.draft { @apply text-theme-text; }
 
 .puzzle-actions {
     @apply flex gap-2 p-3 pt-0;
 }
 
 .puzzle-item .btn-small {
-    @apply px-3 py-2 text-xs font-bold rounded-lg text-center transition-colors flex-1;
+    @apply px-3 py-2 text-xs uppercase tracking-widest text-center transition-colors flex-1 border border-theme-border;
 }
 
 .puzzle-item .btn-small.btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700;
+    @apply bg-theme-inverseBg text-theme-inverseText hover:bg-transparent hover:text-theme-text;
 }
 
 .puzzle-item .btn-small.btn-secondary {
-    @apply bg-gray-100 text-gray-600 hover:bg-gray-200;
+    @apply bg-theme-bg text-theme-text hover:bg-theme-surfaceHeader;
 }

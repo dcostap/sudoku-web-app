@@ -1,69 +1,48 @@
 
 .help-page {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: var(--background-color);
-    padding: 2em;
-    overflow-y: auto;
+    @apply fixed inset-0 bg-theme-bg text-theme-text p-6 overflow-y-auto;
 }
 
 .help-page .close-button {
-    position: fixed;
-    right: 1em;
-    top: 1em;
-    font-size: 1.8em;
-    font-weight: bold;
-    border: none;
-    width: 1.3em;
-    height: 1.3em;
-    color: var(--status-bar-button-text-color);
-    background-color: var(--status-bar-button-hover-color);
-    border-radius: 0.1em;
+    @apply fixed right-4 top-4 w-10 h-10 border border-theme-border bg-theme-surface text-theme-text text-lg;
 }
 
 .help-page .close-button:hover {
-    background-color: var(--status-bar-button-hover-color);
+    @apply bg-theme-surfaceHeader;
 }
 
 .help-page .content {
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.4;
-    padding-bottom: 5em;
+    @apply max-w-3xl mx-auto leading-relaxed pb-16;
 }
 
 .help-page h1 {
-    font-size: 2rem;
+    @apply text-lg uppercase tracking-widest mt-10 mb-4;
 }
 
 .help-page ul {
-    padding-left: 1.4em;
+    @apply pl-5 list-disc;
 }
 
 .help-page li {
-    margin-bottom: 0.3em;
+    @apply mb-2 text-xs opacity-80;
 }
 
 .help-page dt {
-    font-weight: 600;
+    @apply text-xs uppercase tracking-widest mt-4;
 }
 
 .help-page dd {
-    margin: 0 0 0.8em 1.6em;
+    @apply ml-6 mb-3 text-xs opacity-70;
 }
 
 @media screen and (max-width: 500px) {
 
     .help-page {
-        padding: 1.2em;
+        @apply p-4;
     }
 
     .help-page .close-button {
-        right: 0.4em;
-        top: 0.4em;
+        @apply right-3 top-3;
     }
 
 }

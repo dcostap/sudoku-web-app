@@ -1,5 +1,5 @@
 .replay-controls {
-    @apply fixed top-0 left-0 right-0 bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-2xl z-50 p-2 md:p-3;
+    @apply fixed top-0 left-0 right-0 bg-theme-bg text-theme-text border-b border-theme-border z-50 p-3;
 }
 
 .replay-header {
@@ -7,27 +7,27 @@
 }
 
 .replay-header h2 {
-    @apply text-lg md:text-xl font-bold m-0;
+    @apply text-sm uppercase tracking-widest m-0;
 }
 
 .replay-status {
-    @apply px-2 py-0.5 text-xs font-semibold rounded-full;
+    @apply px-2 py-0.5 text-[10px] uppercase tracking-widest border border-theme-border;
 }
 
 .replay-status.status-solved {
-    @apply bg-green-500 text-white;
+    @apply text-theme-text;
 }
 
 .replay-status.status-abandoned {
-    @apply bg-gray-400 text-white;
+    @apply text-theme-text opacity-60;
 }
 
 .replay-time {
-    @apply text-xs opacity-90;
+    @apply text-[10px] uppercase tracking-widest opacity-70;
 }
 
 .replay-step-info {
-    @apply text-sm font-bold;
+    @apply text-[10px] uppercase tracking-widest;
 }
 
 .replay-main-controls {
@@ -43,24 +43,24 @@
 }
 
 .replay-slider {
-    @apply w-full h-2 bg-white/30 rounded-lg appearance-none cursor-pointer my-1;
+    @apply w-full h-2 bg-theme-surfaceHeader rounded-none appearance-none cursor-pointer my-1;
 }
 
 .replay-slider::-webkit-slider-thumb {
-    @apply appearance-none w-5 h-5 bg-white rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform;
+    @apply appearance-none w-4 h-4 bg-theme-text cursor-pointer transition-transform;
 }
 
 .replay-slider::-moz-range-thumb {
-    @apply w-5 h-5 bg-white rounded-full cursor-pointer border-0 shadow-lg hover:scale-110 transition-transform;
+    @apply w-4 h-4 bg-theme-text cursor-pointer border-0 transition-transform;
 }
 
 .replay-btn {
-    @apply px-2.5 py-1 bg-white/20 hover:bg-white/30 rounded font-bold text-base transition-all duration-200 border-none cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed active:scale-95;
+    @apply px-2.5 py-1 border border-theme-border bg-theme-surface hover:bg-theme-surfaceHeader text-xs uppercase tracking-widest transition-all duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed active:scale-95;
     min-width: 36px;
 }
 
 .replay-btn-play {
-    @apply bg-white/30 hover:bg-white/40 px-4;
+    @apply bg-theme-inverseBg text-theme-inverseText hover:bg-transparent hover:text-theme-text px-4;
 }
 
 .replay-speed-control {
@@ -68,11 +68,11 @@
 }
 
 .replay-speed-select {
-    @apply px-1.5 py-0.5 bg-white/20 hover:bg-white/30 rounded border-none text-white text-xs font-semibold cursor-pointer;
+    @apply px-1.5 py-0.5 bg-theme-bg border border-theme-border text-[10px] uppercase tracking-widest cursor-pointer;
 }
 
 .replay-btn-home {
-    @apply px-3 py-1 bg-red-500 hover:bg-red-600 rounded font-semibold text-sm transition-all duration-200 no-underline text-white active:scale-95;
+    @apply px-3 py-1 border border-theme-border bg-theme-bg text-[10px] uppercase tracking-widest transition-all duration-200 no-underline active:scale-95;
 }
 
 @media (max-width: 768px) {

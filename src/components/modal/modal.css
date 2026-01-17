@@ -7,18 +7,18 @@
 }
 
 .modal {
-    @apply relative max-w-lg w-full max-h-[90vh] overflow-y-auto touch-pan-y p-8 bg-white rounded-3xl shadow-2xl animate-scale-in;
+    @apply relative max-w-lg w-full max-h-[90vh] overflow-y-auto touch-pan-y p-6 bg-theme-bg border border-theme-border shadow-sm animate-scale-in;
     box-sizing: border-box;
-    color: #1e293b;
+    color: var(--text-color);
 }
 
 .modal h1 {
-    @apply text-xl font-black text-gray-900 mt-0 mb-6 uppercase tracking-tight;
-    line-height: 1.2;
+    @apply text-lg mt-0 mb-4 uppercase tracking-widest;
+    line-height: 1.4;
 }
 
 .modal p {
-    @apply text-sm text-gray-500 mb-6;
+    @apply text-xs opacity-70 mb-6;
 }
 
 .modal .buttons,
@@ -27,23 +27,23 @@
 }
 
 .modal .primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-primary-500/20;
+    @apply bg-theme-inverseBg text-theme-inverseText hover:bg-transparent hover:text-theme-text;
 }
 
 .modal .secondary,
 .modal .cancel {
-    @apply bg-gray-100 text-gray-600 hover:bg-gray-200;
+    @apply bg-theme-bg text-theme-text hover:bg-theme-surfaceHeader;
 }
 
 .modal .danger {
-    @apply bg-red-100 text-red-600 hover:bg-red-200;
+    @apply bg-theme-bg text-theme-error border-theme-error;
 }
 
 .modal .primary,
 .modal .secondary,
 .modal .cancel,
 .modal .danger {
-    @apply px-5 py-2.5 text-sm font-bold rounded-xl border-none transition-all duration-100 active:scale-95 inline-block text-center no-underline;
+    @apply px-5 py-2 text-xs uppercase tracking-widest border border-theme-border transition-all duration-100 active:scale-95 inline-block text-center no-underline;
     min-width: 6rem;
 }
 
@@ -53,7 +53,7 @@
 
 .modal.paste textarea,
 .modal.invalid-initial-digits textarea {
-    @apply w-full h-32 p-4 text-sm font-mono bg-gray-50 border-2 border-gray-100 rounded-2xl focus:border-primary-500 focus:bg-white transition-all outline-none resize-none mb-4;
+    @apply w-full h-32 p-4 text-xs font-mono bg-theme-surface border border-theme-border focus:border-theme-text focus:bg-theme-bg transition-all outline-none resize-none mb-4;
 }
 
 .settings-list {
@@ -65,7 +65,7 @@
 }
 
 .settings-list li .text {
-    @apply text-sm font-bold text-gray-700;
+    @apply text-xs uppercase tracking-widest;
 }
 
 input.toggle {
@@ -73,15 +73,15 @@ input.toggle {
 }
 
 input.toggle + .indicator {
-    @apply relative w-12 h-6 bg-gray-200 rounded-full transition-colors duration-200 border-2 border-transparent;
+    @apply relative w-12 h-6 bg-theme-surface rounded-full transition-colors duration-200 border border-theme-border;
 }
 
 input.toggle:checked + .indicator {
-    @apply bg-primary-500;
+    @apply bg-theme-inverseBg;
 }
 
 input.toggle + .indicator::before {
-    @apply content-[''] absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200;
+    @apply content-[''] absolute left-0.5 top-0.5 w-4 h-4 bg-theme-bg rounded-full transition-transform duration-200;
 }
 
 input.toggle:checked + .indicator::before {
@@ -125,15 +125,15 @@ input.toggle:checked + .indicator::before {
 
 /* Saved puzzles improvements */
 .saved-puzzle {
-    @apply flex items-center gap-6 p-4 border border-gray-100 rounded-2xl mb-4 last:mb-0 hover:border-gray-200 transition-colors;
+    @apply flex items-center gap-6 p-4 border border-theme-border mb-4 last:mb-0 hover:border-theme-text transition-colors;
 }
 
 .puzzle-metadata {
-    @apply flex-1 text-xs text-gray-500 space-y-1;
+    @apply flex-1 text-[10px] uppercase tracking-widest opacity-70 space-y-1;
 }
 
 .puzzle-metadata th {
-    @apply font-bold text-gray-700 pr-2 text-left;
+    @apply font-bold pr-2 text-left;
 }
 
 .puzzle-buttons {
@@ -150,19 +150,19 @@ input.toggle:checked + .indicator::before {
 }
 
 .feature-list th {
-    @apply text-left border-b-2 border-gray-100 py-2 font-bold text-gray-400 uppercase text-[10px] tracking-widest;
+    @apply text-left border-b border-theme-border py-2 uppercase text-[10px] tracking-widest opacity-60;
 }
 
 .feature-list td {
-    @apply py-3 border-b border-gray-50;
+    @apply py-3 border-b border-theme-border;
 }
 
 /* Status badges */
 .status-badge {
-    @apply inline-flex items-center px-1.5 py-0.5 text-[10px] font-black uppercase rounded bg-gray-100 text-gray-500;
+    @apply inline-flex items-center px-1.5 py-0.5 text-[10px] uppercase tracking-widest border border-theme-border;
 }
 
-.status-badge.solved { @apply bg-green-100 text-green-700; }
+.status-badge.solved { @apply text-theme-text; }
 
 /* Responsive adjustments */
 @media (max-width: 640px) {

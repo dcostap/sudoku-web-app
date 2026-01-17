@@ -58,7 +58,7 @@ function PuzzleItem({ puzzle, type = 'nyt', showRatings, shortenLinks, onClick, 
         <>
             <a 
                 href={`${puzzleUrl}&replay=1`} 
-                className="btn-small btn-secondary text-primary-600 border-primary-100 hover:bg-primary-50"
+                className="btn-small btn-secondary"
             >
                 ▶ Replay
             </a>

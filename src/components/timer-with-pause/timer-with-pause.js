@@ -21,7 +21,7 @@ function ElapsedTime ({intervalStartTime, endTime, pausedAt}) {
     const seconds = Math.floor(((endTime || pausedAt || tickNow) - intervalStartTime) / 1000);
 
     return (
-        <span className="text-base font-mono text-gray-700">{secondsAsHMS(seconds)}</span>
+        <span className="timer-elapsed">{secondsAsHMS(seconds)}</span>
     );
 }
 
@@ -32,13 +32,13 @@ function TimerWithPause({startTime, intervalStartTime, endTime, pausedAt, pauseH
     const hintCount = hintsUsedCount > 0
         ? (
             <span
-                className="inline-flex items-center justify-center min-w-[1.5rem] h-6 px-2 ml-2 text-xs font-semibold text-white bg-gradient-to-br from-orange-400 to-orange-500 rounded-full shadow-sm"
+                className="timer-hints"
                 title={`${hintsUsedCount} hint${hintsUsedCount === 1 ? "" : "s"} used`}
             >{hintsUsedCount}</span>
         )
         : null;
     return (
-        <div className="flex items-center gap-2 px-4 py-2">
+        <div className="timer-block">
             <ElapsedTime intervalStartTime={intervalStartTime} endTime={endTime} pausedAt={pausedAt} />
             {hintCount}
             <button 
@@ -46,7 +46,7 @@ function TimerWithPause({startTime, intervalStartTime, endTime, pausedAt, pauseH
                 type="button" 
                 title="Pause timer" 
                 onClick={pauseHandler}
-                className="w-8 h-8 flex items-center justify-center rounded-md bg-white/50 hover:bg-white/80 border border-gray-200/50 hover:border-primary-300 transition-all duration-200 hover:shadow-md active:scale-95"
+                className="icon-button timer-button active:scale-95"
             >
                 <ButtonIcon name="pause" />
             </button>

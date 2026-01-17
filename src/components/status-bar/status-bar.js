@@ -6,15 +6,13 @@ import HintButton from '../buttons/hint-button';
 import FullscreenButton from '../buttons/fullscreen-button';
 
 
-import './status-bar.css';
-
 const stopPropagation = (e) => e.stopPropagation();
 
 
 function SiteLink () {
     return (
-        <a href="/" className="text-lg font-semibold text-gray-800 hover:text-primary-600 transition-colors duration-200">
-             ❮ Go back
+        <a href="/" className="retro-link text-xs font-bold tracking-widest uppercase">
+             ❮ Sudoku
         </a>
     );
 }
@@ -38,41 +36,41 @@ function StatusBar ({
             />
         )
         : isDesignMode ? (
-            <div className="flex items-center gap-2 px-4 py-1.5 bg-amber-50 border border-amber-200 rounded-full">
-                <span className="text-amber-600">✎</span>
-                <span className="text-xs font-black text-amber-700 uppercase tracking-widest">Design Mode</span>
+            <div className="tag-pill">
+                <span className="text-theme-accent text-[10px] font-bold tracking-[0.2em]">Design</span>
+                <span className="text-[10px] opacity-70 uppercase tracking-widest">Mode</span>
             </div>
         ) : null;
 
     const nytBadge = nytInfo ? (
-        <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-100 rounded-full">
-            <span className="text-blue-600 text-[10px] font-bold uppercase">NYT</span>
-            <span className="text-[10px] font-semibold text-blue-800">
+        <div className="tag-pill hidden lg:flex">
+            <span className="text-theme-accent text-[10px] font-bold tracking-[0.2em]">NYT</span>
+            <span className="text-[10px] opacity-70">
                 {nytInfo.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </span>
-            <span className={`text-[10px] font-black uppercase px-1.5 rounded-sm ${
-                nytInfo.difficulty === 'hard' ? 'bg-rose-100 text-rose-700' :
-                nytInfo.difficulty === 'medium' ? 'bg-amber-100 text-amber-700' :
-                nytInfo.difficulty === 'easy' ? 'bg-emerald-100 text-emerald-700' :
-                'bg-slate-800 text-white'
-            }`}>
+            <span className="tag-compact">
                 {nytInfo.difficulty}
             </span>
         </div>
     ) : null;
 
     return (
-        <div className="fixed top-0 left-0 w-full h-[7.5vh] z-50" onMouseDown={stopPropagation}>
-            <div className="h-full flex items-center justify-between px-4 pt-2">
-                <div className="hidden md:flex items-center gap-4 flex-1">
+        <nav className="app-nav" onMouseDown={stopPropagation}>
+            <div className="app-nav-inner">
+                <div className="app-nav-left">
                     <SiteLink />
                     {nytBadge}
                 </div>
-                {timer}
-                <div className="flex items-center gap-2 ml-auto">
-                    <FullscreenButton />
-                    <HintButton menuHandler={menuHandler} />
-                    <SettingsButton menuHandler={menuHandler} />
+                <div className="app-nav-center">
+                    {timer}
+                </div>
+                <div className="app-nav-right">
+                    <div className="hidden md:flex items-center gap-2">
+                        <FullscreenButton />
+                        <HintButton menuHandler={menuHandler} />
+                        <SettingsButton menuHandler={menuHandler} />
+                    </div>
+                    <div className="hidden md:block h-6 border-l border-theme-border mx-2"></div>
                     <MenuButton
                         initialDigits={initialDigits}
                         showPencilmarks={showPencilmarks}
@@ -80,7 +78,7 @@ function StatusBar ({
                     />
                 </div>
             </div>
-        </div>
+        </nav>
     );
 }
 

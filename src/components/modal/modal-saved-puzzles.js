@@ -12,7 +12,7 @@ function SavedPuzzleList({savedPuzzles=[], showRatings, shortenLinks, discardHan
                     Resume
                 </a>
                 <button
-                    className="btn-small btn-secondary text-rose-600 border-rose-100 hover:bg-rose-50"
+                    className="btn-small btn-secondary"
                     onClick={discardHandler}
                     data-puzzle-state-key={puzzle.puzzleStateKey}
                 >
