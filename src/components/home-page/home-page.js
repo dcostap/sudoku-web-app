@@ -229,19 +229,19 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
                             <>
                                 <a 
                                     href={`${modelHelpers.getPuzzleUrl(entry, shortenLinks)}&replay=1`} 
-                                    className="btn-small btn-secondary"
+                                    className="btn-small btn-secondary whitespace-nowrap"
                                 >
                                     ▶ Replay
                                 </a>
                                 <button 
-                                    className="btn-small btn-secondary"
+                                    className="btn-small btn-secondary whitespace-nowrap"
                                     onClick={() => handleCopyHistory(entry)}
                                 >
                                     ⎘ Dump
                                 </button>
                                 <a 
                                     href={`${modelHelpers.getPuzzleUrl(entry, shortenLinks)}&restart=1`} 
-                                    className="btn-small btn-primary"
+                                    className="btn-small btn-primary whitespace-nowrap"
                                 >
                                     ↻ Again
                                 </a>

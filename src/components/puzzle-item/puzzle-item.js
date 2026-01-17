@@ -24,7 +24,7 @@ function PuzzleItem({ puzzle, type = 'nyt', showRatings, shortenLinks, onClick, 
     const difficultyKey = puzzle.difficultyLevel || puzzle.difficulty;
     const difficultyLevel = difficultyMap[String(difficultyKey).toLowerCase()] || 'easy';
 
-    const nytInfo = modelHelpers.getNYTInfo(puzzle.id || puzzle.initialDigits || puzzle.digits || '');
+    const nytInfo = modelHelpers.getNYTInfo(puzzle.initialDigits || puzzle.digits || puzzle.id || '');
 
     const renderNYTTag = () => {
         if (!nytInfo) return null;
@@ -37,7 +37,7 @@ function PuzzleItem({ puzzle, type = 'nyt', showRatings, shortenLinks, onClick, 
             <div className="nyt-tag" title="New York Times Sudoku">
                 <span className="text-theme-accent font-bold">NYT</span>
                 {showNytDate && (
-                    <span className="opacity-70 ml-1.5 text-xs">
+                    <span className="opacity-70 ml-1.5 text-xs text-nowrap">
                         {nytInfo.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                 )}
@@ -46,7 +46,7 @@ function PuzzleItem({ puzzle, type = 'nyt', showRatings, shortenLinks, onClick, 
     };
 
     const renderStatusBadge = () => {
-        if (type === 'nyt') return null;
+        if (type === 'nyt' || (nytInfo && type !== 'history')) return null;
         const status = (puzzle.status || (puzzle.isSolved ? 'solved' : 'draft')).toLowerCase();
         let label = status;
         if (status === 'solved') label = '✓ Solved';
@@ -67,7 +67,7 @@ function PuzzleItem({ puzzle, type = 'nyt', showRatings, shortenLinks, onClick, 
         
         if (type === 'history' || puzzle.status === 'solved') {
             dateStr = `Solved ${formattedDate}`;
-        } else if (type === 'in-progress' || puzzle.status === 'draft') {
+        } else if (type === 'in-progress' || type === 'saved' || puzzle.status === 'draft') {
             dateStr = `Saved ${formattedDate}`;
         } else {
             dateStr = formattedDate;
@@ -81,13 +81,13 @@ function PuzzleItem({ puzzle, type = 'nyt', showRatings, shortenLinks, onClick, 
         <>
             <a 
                 href={`${puzzleUrl}&replay=1`} 
-                className="btn-small btn-secondary"
+                className="btn-small btn-secondary whitespace-nowrap"
             >
                 ▶ Replay
             </a>
             <a 
                 href={type === 'history' ? `${puzzleUrl}&restart=1` : puzzleUrl} 
-                className="btn-small btn-primary"
+                className="btn-small btn-primary whitespace-nowrap"
             >
                 {puzzle.status === 'draft' || puzzle.mode === 'enter' ? '✎ Resume' : '↻ Again'}
             </a>

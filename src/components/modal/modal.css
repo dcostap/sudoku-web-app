@@ -81,11 +81,11 @@ input.toggle:checked + .indicator {
 }
 
 input.toggle + .indicator::before {
-    @apply content-[''] absolute left-0.5 top-0.5 w-4 h-4 bg-theme-bg rounded-full transition-transform duration-200;
+    @apply content-[''] absolute left-0.5 top-0.5 w-4 h-4 bg-gray-400 rounded-full transition-transform duration-200;
 }
 
 input.toggle:checked + .indicator::before {
-    @apply translate-x-6;
+    @apply translate-x-6 bg-gray-200;
 }
 
 /* Specific modal sizes */
