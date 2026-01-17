@@ -129,7 +129,7 @@ input.toggle:checked + .indicator::before {
 }
 
 .puzzle-metadata {
-    @apply flex-1 text-[10px] uppercase tracking-widest opacity-70 space-y-1;
+    @apply flex-1 text-sm uppercase tracking-widest opacity-70 space-y-1;
 }
 
 .puzzle-metadata th {
@@ -150,7 +150,7 @@ input.toggle:checked + .indicator::before {
 }
 
 .feature-list th {
-    @apply text-left border-b border-theme-border py-2 uppercase text-[10px] tracking-widest opacity-60;
+    @apply text-left border-b border-theme-border py-2 uppercase text-sm tracking-widest opacity-60;
 }
 
 .feature-list td {
@@ -159,7 +159,7 @@ input.toggle:checked + .indicator::before {
 
 /* Status badges */
 .status-badge {
-    @apply inline-flex items-center px-1.5 py-0.5 text-[10px] uppercase tracking-widest border border-theme-border;
+    @apply inline-flex items-center px-1.5 py-0.5 text-sm uppercase tracking-widest border border-theme-border;
 }
 
 .status-badge.solved { @apply text-theme-text; }

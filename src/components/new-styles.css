@@ -8,8 +8,7 @@
     @apply inline-flex items-center justify-center 
            cursor-pointer select-none box-border
            transform-gpu [backface-visibility:hidden]
-           antialiased transition-none px-[0.7rem] py-[0.3rem]
-           rounded-xl;
+           antialiased transition-none px-[0.7rem] py-[0.3rem];
   }
 
   /* Secondary Button */

@@ -37,15 +37,15 @@ function StatusBar ({
         )
         : isDesignMode ? (
             <div className="tag-pill">
-                <span className="text-theme-accent text-[10px] font-bold tracking-[0.2em]">Design</span>
-                <span className="text-[10px] opacity-70 uppercase tracking-widest">Mode</span>
+                <span className="text-theme-accent text-sm font-bold tracking-[0.2em]">Design</span>
+                <span className="text-sm opacity-70 uppercase tracking-widest">Mode</span>
             </div>
         ) : null;
 
     const nytBadge = nytInfo ? (
         <div className="tag-pill hidden lg:flex">
-            <span className="text-theme-accent text-[10px] font-bold tracking-[0.2em]">NYT</span>
-            <span className="text-[10px] opacity-70">
+            <span className="text-theme-accent text-sm font-bold tracking-[0.2em]">NYT</span>
+            <span className="text-sm opacity-70">
                 {nytInfo.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </span>
             <span className="tag-compact">

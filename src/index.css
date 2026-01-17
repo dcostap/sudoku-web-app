@@ -5,7 +5,7 @@
 @layer base {
     :root {
         /* Light Mode */
-        --bg-color: #ffffff;
+        --bg-color: #f8fafc;
         --text-color: #000000;
         --surface-color: #f4f4f5;
         --surface-header: #e4e4e7;
@@ -46,7 +46,7 @@
         --difficulty-indicator-text-color: var(--text-color);
 
         /* Sudoku Grid Variables - EXACT ORIGINAL VALUES RESTORED */
-        --background-color: #f8fafc;
+        /* --background-color: #f8fafc; */
         --grid-line-color: #000000;
         --grid-line-color-bold: #000000;
         --grid-line-width: 1;
@@ -229,22 +229,22 @@
 
     /* PRIMARY: High contrast buttons */
     .ui-btn-primary {
-        @apply px-6 py-2 bg-theme-inverseBg text-theme-inverseText border border-theme-inverseBg hover:bg-transparent hover:text-theme-text hover:border-theme-text transition-all duration-200 uppercase text-xs font-bold tracking-widest cursor-pointer inline-flex items-center justify-center;
+        @apply px-6 py-2 bg-theme-inverseBg text-theme-inverseText border border-theme-inverseBg hover:bg-transparent hover:text-theme-text hover:border-theme-text transition-all duration-200 uppercase text-sm font-bold tracking-widest cursor-pointer inline-flex items-center justify-center;
     }
 
     /* SECONDARY: Outline buttons */
     .ui-btn-secondary {
-        @apply px-6 py-2 bg-transparent text-theme-text border border-theme-text hover:bg-theme-inverseBg hover:text-theme-inverseText hover:border-theme-inverseBg transition-all duration-200 uppercase text-xs font-bold tracking-widest cursor-pointer inline-flex items-center justify-center;
+        @apply px-6 py-2 bg-transparent text-theme-text border border-theme-text hover:bg-theme-inverseBg hover:text-theme-inverseText hover:border-theme-inverseBg transition-all duration-200 uppercase text-sm font-bold tracking-widest cursor-pointer inline-flex items-center justify-center;
     }
 
     /* ACCENT: The blue action button */
     .ui-btn-accent {
-        @apply px-6 py-2 bg-theme-accent text-theme-accentText text-xs font-bold tracking-widest hover:brightness-110 transition-all shadow-sm uppercase cursor-pointer inline-flex items-center justify-center;
+        @apply px-6 py-2 bg-theme-accent text-theme-accentText text-sm font-bold tracking-widest hover:brightness-110 transition-all shadow-sm uppercase cursor-pointer inline-flex items-center justify-center;
     }
 
     /* Ghost button / Link button */
     .ui-btn-ghost {
-        @apply px-4 py-2 text-xs opacity-70 hover:opacity-100 transition-opacity uppercase tracking-widest cursor-pointer;
+        @apply px-4 py-2 text-sm opacity-70 hover:opacity-100 transition-opacity uppercase tracking-widest cursor-pointer;
     }
 
     .surface-panel {
@@ -252,7 +252,7 @@
     }
 
     .panel-header {
-        @apply px-4 py-2 border-b border-theme-border bg-theme-surfaceHeader text-[10px] font-bold tracking-widest uppercase flex justify-between items-center;
+        @apply px-4 py-2 border-b border-theme-border bg-theme-surfaceHeader text-xs font-bold tracking-widest uppercase flex justify-between items-center;
     }
 
     .sudoku-app {
@@ -279,7 +279,7 @@
     }
 
     .tab-item {
-        @apply px-4 py-2 text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity cursor-pointer border-b-2 border-transparent;
+        @apply px-4 py-2 text-sm uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity cursor-pointer border-b-2 border-transparent;
     }
     
     .tab-item.active {
@@ -287,11 +287,11 @@
     }
 
     .app-nav {
-        @apply border-b border-theme-border sticky top-0 bg-theme-bg backdrop-blur-sm z-50;
+        @apply border-b border-theme-border sticky top-0 bg-theme-bg backdrop-blur-sm z-50 py-1;
     }
 
     .app-nav-inner {
-        @apply max-w-[1400px] mx-auto px-5 py-4 flex items-center gap-4;
+        @apply max-w-[1400px] mx-auto px-5 py-0 flex items-center gap-4;
     }
 
     .app-nav-left {
@@ -299,7 +299,7 @@
     }
 
     .app-nav-center {
-        @apply flex-1 flex justify-center;
+        @apply flex-1 flex justify-center items-center;
     }
 
     .app-nav-right {
@@ -307,15 +307,19 @@
     }
 
     .icon-button {
-        @apply w-10 h-10 rounded-full border border-theme-border bg-theme-surface hover:bg-theme-surfaceHeader transition-colors inline-flex items-center justify-center;
+        @apply w-7 h-7 border border-theme-border bg-theme-surface hover:bg-theme-surfaceHeader transition-colors inline-flex items-center justify-center;
+    }
+
+    .button-icon {
+        @apply w-5 h-5;
     }
 
     .tag-pill {
-        @apply inline-flex items-center gap-2 px-3 py-1 border border-theme-border bg-theme-surface text-[10px] uppercase tracking-[0.2em];
+        @apply inline-flex items-center gap-2 px-3 py-1 border border-theme-border bg-theme-surface text-sm uppercase tracking-[0.2em];
     }
 
     .tag-compact {
-        @apply inline-flex items-center px-2 py-0.5 border border-theme-border bg-theme-surface text-[10px] uppercase tracking-wider;
+        @apply inline-flex items-center px-2 py-0.5 border border-theme-border bg-theme-surface text-sm uppercase tracking-wider;
     }
 
     .menu-panel {

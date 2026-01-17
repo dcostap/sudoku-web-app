@@ -11,7 +11,7 @@
 }
 
 .replay-status {
-    @apply px-2 py-0.5 text-[10px] uppercase tracking-widest border border-theme-border;
+    @apply px-2 py-0.5 text-sm uppercase tracking-widest border border-theme-border;
 }
 
 .replay-status.status-solved {
@@ -23,11 +23,11 @@
 }
 
 .replay-time {
-    @apply text-[10px] uppercase tracking-widest opacity-70;
+    @apply text-sm uppercase tracking-widest opacity-70;
 }
 
 .replay-step-info {
-    @apply text-[10px] uppercase tracking-widest;
+    @apply text-sm uppercase tracking-widest;
 }
 
 .replay-main-controls {
@@ -68,11 +68,11 @@
 }
 
 .replay-speed-select {
-    @apply px-1.5 py-0.5 bg-theme-bg border border-theme-border text-[10px] uppercase tracking-widest cursor-pointer;
+    @apply px-1.5 py-0.5 bg-theme-bg border border-theme-border text-sm uppercase tracking-widest cursor-pointer;
 }
 
 .replay-btn-home {
-    @apply px-3 py-1 border border-theme-border bg-theme-bg text-[10px] uppercase tracking-widest transition-all duration-200 no-underline active:scale-95;
+    @apply px-3 py-1 border border-theme-border bg-theme-bg text-sm uppercase tracking-widest transition-all duration-200 no-underline active:scale-95;
 }
 
 @media (max-width: 768px) {

@@ -24,11 +24,11 @@
 }
 
 .puzzle-date {
-    @apply text-[10px] uppercase tracking-widest block truncate;
+    @apply text-sm uppercase tracking-widest block truncate;
 }
 
 .difficulty-badge {
-    @apply text-[10px] uppercase tracking-widest px-1.5 py-0.5 border border-theme-border bg-theme-bg self-start;
+    @apply text-sm uppercase tracking-widest px-1.5 py-0.5 border border-theme-border bg-theme-bg self-start;
 }
 
 .puzzle-item.nyt .difficulty-badge {
@@ -49,7 +49,7 @@
 }
 
 .nyt-tag {
-    @apply mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 border border-theme-border text-[10px] uppercase tracking-widest self-start;
+    @apply mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 border border-theme-border text-sm uppercase tracking-widest self-start;
 }
 
 .nyt-icon {
@@ -57,7 +57,7 @@
 }
 
 .status-badge {
-    @apply inline-flex items-center self-start px-2 py-0.5 text-[10px] uppercase tracking-wider border border-theme-border mb-1;
+    @apply inline-flex items-center self-start px-2 py-0.5 text-sm uppercase tracking-wider border border-theme-border mb-1;
 }
 
 .status-badge.solved { @apply text-theme-text; }

@@ -10,10 +10,6 @@
     }
 
     .timer-hints {
-        @apply inline-flex items-center justify-center min-w-[1.5rem] h-5 px-1 text-[10px] font-bold border border-theme-border bg-theme-surfaceHeader;
-    }
-
-    .timer-button {
-        @apply w-8 h-8 rounded-full;
+        @apply inline-flex items-center justify-center min-w-[1.5rem] h-5 px-1 text-sm font-bold border border-theme-border bg-theme-surfaceHeader;
     }
 }

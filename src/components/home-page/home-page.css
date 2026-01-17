@@ -3,15 +3,15 @@
 }
 
 .home-page-content {
-    @apply flex-1 max-w-6xl w-full mx-auto px-5 py-10 flex flex-col overflow-hidden;
+    @apply flex-1 max-w-6xl w-full mx-auto px-5 py-5 flex flex-col overflow-hidden;
 }
 
 .home-hero {
-    @apply text-center border-b border-theme-border pb-10 mb-10;
+    @apply text-center border-b border-theme-border;
 }
 
 .home-hero-eyebrow {
-    @apply text-[10px] text-theme-accent font-bold tracking-[0.2em] mb-3;
+    @apply text-sm text-theme-accent font-bold tracking-[0.2em] mb-3;
 }
 
 .home-hero h1 {
@@ -19,12 +19,12 @@
 }
 
 .home-hero p {
-    @apply text-xs opacity-70;
+    @apply text-sm opacity-70;
 }
 
 /* Action Grid */
 .action-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4;
 }
 
 .action-btn {
@@ -48,11 +48,15 @@
 }
 
 .action-btn h3 {
-    @apply text-xs uppercase tracking-widest m-0;
+    @apply text-base uppercase tracking-widest m-0;
+}
+
+p {
+    @apply text-base uppercase tracking-widest m-0;
 }
 
 .action-btn p {
-    @apply text-[10px] opacity-60 m-0;
+    @apply text-xs opacity-60 m-0;
 }
 
 /* Tabs */
@@ -61,7 +65,7 @@
 }
 
 .tabs {
-    @apply flex flex-wrap gap-4 border-b border-theme-border text-xs uppercase tracking-widest;
+    @apply flex flex-wrap gap-x-4 border-b border-theme-border text-sm uppercase tracking-widest;
 }
 
 .tab-item {
@@ -74,7 +78,7 @@
 }
 
 .tab-item .count {
-    @apply ml-2 px-1.5 py-0.5 text-[10px] border border-theme-border uppercase tracking-widest;
+    @apply ml-2 px-1.5 py-0.5 text-sm border border-theme-border uppercase tracking-widest;
 }
 
 .tab-panels {
@@ -100,7 +104,7 @@
 }
 
 .nyt-month-section h2 {
-    @apply flex items-center gap-3 px-4 py-3 m-0 text-xs uppercase tracking-widest cursor-pointer select-none hover:bg-theme-surfaceHeader transition-colors;
+    @apply flex items-center gap-3 px-4 py-3 m-0 text-sm uppercase tracking-widest cursor-pointer select-none hover:bg-theme-surfaceHeader transition-colors;
 }
 
 .nyt-month-section h2 .month-name {
@@ -108,7 +112,7 @@
 }
 
 .nyt-month-section h2 .puzzle-count {
-    @apply text-[10px] opacity-60 border border-theme-border px-2 py-0.5;
+    @apply text-sm opacity-60 border border-theme-border px-2 py-0.5;
 }
 
 .nyt-month-section h2 .chevron {
@@ -120,7 +124,7 @@
 }
 
 .puzzles-empty, .nyt-puzzles-empty {
-    @apply py-16 text-center text-xs uppercase tracking-widest opacity-50;
+    @apply py-16 text-center text-sm uppercase tracking-widest opacity-50;
 }
 
 @media (max-width: 640px) {

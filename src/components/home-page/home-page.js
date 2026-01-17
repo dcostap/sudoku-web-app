@@ -209,9 +209,7 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
         <div className="home-page">
             <main className="home-page-content">
                 <header className="home-hero">
-                    <div className="home-hero-eyebrow">LOCAL SUDOKU STUDIO</div>
-                    <h1>Play. Review. Archive.</h1>
-                    <p>Monochrome, minimal, and focused on the grid.</p>
+                    <h1>Sudoku</h1>
                 </header>
                 <section className="action-section">
                     <div className="action-grid">

@@ -38,7 +38,7 @@ function TimerWithPause({startTime, intervalStartTime, endTime, pausedAt, pauseH
         )
         : null;
     return (
-        <div className="timer-block">
+        <div className="flex items-center gap-3">
             <ElapsedTime intervalStartTime={intervalStartTime} endTime={endTime} pausedAt={pausedAt} />
             {hintCount}
             <button 
@@ -46,7 +46,7 @@ function TimerWithPause({startTime, intervalStartTime, endTime, pausedAt, pauseH
                 type="button" 
                 title="Pause timer" 
                 onClick={pauseHandler}
-                className="icon-button timer-button active:scale-95"
+                className="icon-button active:scale-95"
             >
                 <ButtonIcon name="pause" />
             </button>
