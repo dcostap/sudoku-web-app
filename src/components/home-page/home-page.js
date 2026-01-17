@@ -237,7 +237,7 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
                                     className="btn-small btn-secondary"
                                     onClick={() => handleCopyHistory(entry)}
                                 >
-                                    ⎘ Copy
+                                    ⎘ Dump
                                 </button>
                                 <a 
                                     href={`${modelHelpers.getPuzzleUrl(entry, shortenLinks)}&restart=1`} 
@@ -258,7 +258,7 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                         </svg>
-                        Copy all completed puzzles
+                        Dump all completed puzzles
                     </button>
                 </div>
             </div>
@@ -296,7 +296,7 @@ function HomePage({ nytPuzzles, showRatings, shortenLinks, onNewPuzzle, onImport
                             </div>
                             <div className="text">
                                 <h3>Import</h3>
-                                <p>Paste string or dump</p>
+                                <p>Paste string or puzzle dump</p>
                             </div>
                         </button>
 
