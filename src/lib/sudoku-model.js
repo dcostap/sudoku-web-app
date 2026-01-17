@@ -1652,6 +1652,19 @@ export const modelHelpers = {
         else if (action === 'apply-hint') {
             return modelHelpers.applyHint(grid, args.hint);
         }
+        else if (action === 'start-puzzle-anyway') {
+            const digits = args.digits || modelHelpers.asDigits(grid);
+            const nextGrid = modelHelpers.setGivenDigits(grid, digits, { skipCheck: true });
+            const now = Date.now();
+            const resultGrid = nextGrid.merge({
+                mode: 'solve',
+                startTime: now,
+                intervalStartTime: now,
+                pausedAt: undefined
+            });
+            modelHelpers.persistPuzzleState(resultGrid);
+            return resultGrid;
+        }
         else {
             console.log(`Unhandled modal action '${action}', args =`, args);
         }

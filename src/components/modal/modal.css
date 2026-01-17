@@ -104,7 +104,7 @@ input.toggle:checked + .indicator::before {
 }
 
 .modal.check-result .check-result-warning {
-    @apply bg-amber-100 text-amber-600;
+    @apply bg-amber-100 dark:bg-transparent text-amber-600;
 }
 
 .modal.check-result .check-result-error {
@@ -120,7 +120,7 @@ input.toggle:checked + .indicator::before {
 }
 
 .modal.check-result p {
-    @apply text-base font-medium text-gray-700 m-0;
+    @apply text-base font-medium;
 }
 
 /* Saved puzzles improvements */

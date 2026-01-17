@@ -18,7 +18,8 @@ import ReplayControls from '../replay-controls/replay-controls';
 
 import {
     MODAL_TYPE_RESUME_OR_RESTART,
-    MODAL_TYPE_HINT
+    MODAL_TYPE_HINT,
+    MODAL_TYPE_CONFIRM_DESIGN_START
 } from '../../lib/modal-types';
 
 const FETCH_DELAY = 1000;
@@ -482,6 +483,12 @@ function dispatchModalAction(action, setGrid) {
         // Suppress onpageunload handling when user clicks 'Start' after pasting a puzzle
         delete document.body.dataset.currentSnapshot;
     }
+    if (action.action === 'start-puzzle-anyway') {
+        const digits = action.digits;
+        if (digits) {
+            window.history.pushState({ s: digits }, '', '?s=' + digits);
+        }
+    }
     setGrid((grid) => modelHelpers.applyModalAction(grid, action));
 }
 
@@ -590,6 +597,19 @@ function App() {
     const handleStart = useCallback((e) => {
         if (e) e.preventDefault();
         const digits = modelHelpers.asDigits(grid);
+        
+        // Check for unique solution before starting
+        const checkResult = modelHelpers.findSolutions(digits.split(''));
+        if (!checkResult.uniqueSolution) {
+            setGrid(grid => grid.set('modalState', {
+                modalType: MODAL_TYPE_CONFIRM_DESIGN_START,
+                errorMessage: checkResult.error || 'This layout might not have a unique solution or is too complex to verify quickly.',
+                digits: digits,
+                escapeAction: 'close',
+            }));
+            return;
+        }
+
         // Change URL without reloading
         window.history.pushState({ s: digits }, '', '?s=' + digits);
         // Switch to solve mode

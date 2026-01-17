@@ -1,5 +1,5 @@
 .replay-controls {
-    @apply fixed top-0 left-0 right-0 bg-theme-bg text-theme-text border-b border-theme-border z-50 p-3;
+    @apply fixed top-0 left-0 right-0 bg-theme-bg text-theme-text border-b border-theme-border z-50 px-5 py-3;
 }
 
 .replay-header {
@@ -112,7 +112,7 @@
 
 @media (max-width: 768px) {
     .replay-controls {
-        @apply p-2;
+        @apply px-12 py-3;
     }
     
     .replay-header {

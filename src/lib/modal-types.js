@@ -16,4 +16,5 @@ export const MODAL_TYPE_ABOUT = 'about';
 export const MODAL_TYPE_QR_CODE = 'qr-code';
 export const MODAL_TYPE_FEATURES = 'features';
 export const MODAL_TYPE_ARCHIVED_PUZZLE = 'archived-puzzle';
+export const MODAL_TYPE_CONFIRM_DESIGN_START = 'confirm-design-start';
 
