@@ -14,7 +14,7 @@ export default function ModalAbout({modalHandler}) {
             
             <div className="about-details space-y-4 mb-8">
                 <p className="text-xs">
-                    Created for <a href="https://sudokuexchange.com/" className="text-theme-accent hover:underline">SudokuExchange.com</a> by <a href="https://grantm.github.io/" className="text-theme-accent hover:underline">Grant McLean</a>.
+                    Fork from <a href="https://sudokuexchange.com/" className="text-theme-accent hover:underline"></a> by <a href="https://grantm.github.io/" className="text-theme-accent hover:underline">Grant McLean</a>.
                 </p>
                 <p className="text-xs">
                     This is <a href="https://www.fsf.org/about/what-is-free-software" className="text-theme-accent hover:underline">free software</a> under the <a href="https://opensource.org/licenses/AGPL-3.0" className="text-theme-accent hover:underline">AGPLv3</a>.

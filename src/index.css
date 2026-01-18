@@ -287,7 +287,9 @@
     }
     
     .tab-item.active {
-        @apply opacity-100 border-theme-text font-bold;
+        @apply opacity-100 border-theme-text;
+        /* Using text-shadow for a bold effect to prevent layout shift (X-size change) */
+        text-shadow: 0.5px 0 0 currentColor;
     }
 
     .app-nav {

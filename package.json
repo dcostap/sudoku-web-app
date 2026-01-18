@@ -1,7 +1,7 @@
 {
   "name": "sudoku",
   "version": "1.0.32",
-  "description": "A web application for solving & sharing Sudoku puzzles. Created for SudokuExchange.com",
+  "description": "SUDOKU web app",
   "author": {
     "name": "Grant McLean",
     "email": "grant@mclean.net.nz",

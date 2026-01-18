@@ -58,7 +58,7 @@ function emailShareURL (initialDigits, difficulty, solveTime) {
     const difficultyLevel = levelName ? `Difficulty level: ${levelName}\n` : '';
     const timeToBeat = solveTime ? `Time to beat: ${solveTime}\n` : '';
     const body =
-        `Here's a link to a Sudoku puzzle on SudokuExchange.com:\n\n` +
+        `Here's a link to this Sudoku puzzle:\n\n` +
         `${pURL}\n\n${difficultyLevel}${timeToBeat}\n`;
     const params = new URLSearchParams();
     params.set('subject', 'A Sudoku puzzle for you');
